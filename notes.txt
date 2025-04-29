@@ -1,0 +1,35 @@
+Tobacco health issue - need to know 
+
+Self reported - tobacco use
+
+Epigenetic
+- DNA made up of ATGC the order determine genetic code
+- GC are located together methyl groups can attach = epigenetic modification
+- upon genetics
+- While genetic code is stable, methylation is dynamic state depending on factors, environment etc.
+- The methylation states can change the expression of genes. With methylation = silent
+- Meth not random, with strong correlation between meth on specific meth sites with specific factors
+- This means as a bio marker meth status can be used as a marker for indicating and reporting on environmental exposures and report on health outcomes
+- Status of meth site can determine health outcomes including cancer risk
+
+Machine learning in epigenetics
+- Applications - screening risk, prognosis, patient information
+- Stats produces - classification/labels, regression/scores
+- Algorithms
+    - Decision trees
+    - Regression 
+    - Examples (info in abstract)
+- Technique elastic net regression
+    - What it is/equation
+    - Why it makes sense for epigenetic
+    - Current best performance across all epigenetic (biological age)
+
+Smoking algorithms
+- Link elastic net two techniques, state their the best?
+- Current algorithms
+    - Dataset/cohort/demographic
+    - Algorithm
+    - Result/stat it produces
+    - Limitations
+
+Aim of this work

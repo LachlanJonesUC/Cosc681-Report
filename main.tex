@@ -1,0 +1,195 @@
+\documentclass{article}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{setspace}
+% \usepackage{parskip}
+\usepackage[backend=biber, sorting=none]{biblatex}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage[group-separator={,}]{siunitx}
+
+\addbibresource{main.bib}
+\graphicspath{ {./images/} }
+
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+
+\begin{document}
+\doublespacing
+
+% \begin{titlepage}
+%     \centering
+%     \singlespacing
+%     \vspace*{1cm}
+
+%     \includegraphics[width=0.2\textwidth]{University_of_Canterbury_logo.svg.png}\\[1.5cm]
+
+%     \Huge
+%     \textbf{COSC681 - AI Project}\\[1.5cm]
+
+%     \LARGE
+%     Classifying smoking history with epigentic-trained machine learning\\[2cm]
+
+%     \Large
+%     \textbf{Lachlan Jones}\\[0.5cm]
+%     2025
+
+%     \vfill
+
+%     \Large
+%     Department of Computer Science\\
+%     University of Canterbury
+% \end{titlepage}
+
+% \pagenumbering{roman}
+
+% \begin{abstract}
+
+% \end{abstract}
+
+% \newpage
+% \tableofcontents
+
+% \listoffigures
+
+% \listoftables
+
+% \newpage
+% \pagenumbering{arabic}
+
+\section{Introduction}
+\subsection{Tobacco Related Health Issues}
+The harms associated with tobacco use are well recognised. Tobacco kills up to half its users who do not quit and more than 8 million people per year, including an estimated 1.3 million non-smokers due to second hand smoke \cite{who_tobacco}. Smoking causes cancer, heart and lung disease, stroke, type 2 diabetes, and harmful reproductive effects \cite{hhs_smoking_2014}. There is a growing body of evidence suggesting a causal relationship between smoking and mental health issues \cite{taylor2019smoking}. Clearly, such negative impacts on patient health due to tobacco use are undesirable, just as they are avoidable. For these reason, tobacco usage is of great concern to health professionals. The World Health Organization asserts that surveillance is key for addressing the tobacco epidemic, as tracking tobacco usage indicates how to shape policy \cite{who_tobacco}.
+
+\subsection{Self-Reported Smoking Status}
+Current surveillance relies on self-reported smoking data. That is, a patient's smoking history is recorded by them personally recalling and reporting. It is a convenient and cost-effective way of collecting smoking statistics. There are two main types of smoking data used to measure tobacco exposure: smoking status and smoking pack-years. Smoking status is label based on the history and habits of tobacco use. Indiviudals are binned into never smokers, ex smokers and current smokers. Smoking pack-years is a calculated score that tries to quantify tobacco use. It is calculated as the number of packs of cigarettes smoked per day multiplied by years of smoking \cite{NCI_pack_year}. For example, one pack-year is one pack per day for one year, or half a pack per day for two years. Therefore, smoking pack-years quantifies both the degree of exposure and duration of exposure equally.
+
+Self-reported smoking data has several limitations. Relying on individuals recounting information can introduce bias. Self-reported smoking data is prone to inaccuracy due to stigma, recall bias and a lack of information on second-hand exposure \cite{park2015correlation}. That is, the social pressure to deny partaking in stigmatised behaviours, forgetting details and information, and not being aware of sources of second-hand exposure can all influence the results of self-reported smoking data. A method of using objective evidence to determine smoking history could overcome these issues. On the other hand, the inaccuracy of self-reported smoking data can differ between population groups. For example, studies suggest that teens are more likely to provide false responses in smoking surveys \cite{park2015correlation}. Moreover, tobacco consumption differs between social groups, with smoking more prevalent in low-education and low-socio-economic groups \cite{cdc2019_smoking}.
+
+To this end, developing diagnostic tests to collect smoking data that do not share the biases of self-reported methods are of interest for improving the monitoring of health. One such approach is the use of epigenetic biomarkers.
+
+\subsection{Epigenetics}
+Epi- is a Greek prefix meaning upon or on. So, epigenetics is the study of factors on top of or upon genetics. Specifically, it is the study of how enviromental factors and behaviours affect and modify your genetics and their expression. We consider one type of epigenetic modification: DNA methylation.
+
+\subsubsection{DNA Methylation}
+At a high level, DNA is a sequence of letters that provide genetic instructions. Like a human reading a book, strings of these letters are converted into information that tells cells how to function. More precisely, these letters are one of four nucleotide bases: adenine (A), cytosine (C), guanine (G) and thymine (T). To form the sequence, these bases are attatched to a deoxyribose sugar and connected by a phosphate molecule, called the sugar-phosphate backbone. Of relevance is the phosphate molecule, specifically for when a cytosine is directly followed by a guanine in the sequence. A phosphate bonding a cytosine and a guanine (called a CpG site) creates a chemical structure which allows methyl groups to attatch. This process is an epigenetic modification called DNA methylation (DNAm). As a biomarker, we measure methylation at a CpG site as a float between 0 and 1, measuring the percentage of methylation at that site.
+
+While the genetic sequence of DNA is stable, methylation is not. It is a dynamic state that depends on factors such has behaviours and enviromental exposure \textbf{(add citation?)}. Exposure to such factors increases methylation of CpG sites, while sufficent lack of exposure causes methylation to decrease over time \textbf{(add citation?)}. As previously mentioned, DNA methylation affects the expression of genes. Methylation at a CpG site can silence the expression of the gene that site is located in \textbf{(add citation?)}. More methylation at a site leads to stronger silencing of that gene. Moreover, DNA methylation is not random. There is strong correlation between methylation of specific sites with specific factors \textbf{(add citation?)}. This means that DNA methylation of CpG sites can be used as a biomarker indicative of the factors that caused it, while also describing changes in cellular function. Therefore, DNA methylation is a biomarker not only useful for reporting on enviromental exposures, but also predicting future health outcomes or risks. Examples of this include \textbf{list some topics of epigenetics-only papers} \textbf{(add citation?)}. Furthermore, DNA methylation is not self-reported, and therefore overcomes the biases associated with self-reported data. 
+
+Altogether, this motivates the use of DNA methylation data to develop methods for collecting smoking history of indiviudals. 
+
+
+% \vspace{1cm}
+% \begin{itemize}
+%     \item At a high level, DNA is a sequence of letters that provide genetic instructions
+%     \item nucleotide bases (A, T, C, G) connected with a phosphate sugar backbone
+%     \item Cs next to Gs create a chemical structure that allows methyl groups to attach: CpG site, = epigenetic modification
+%     \item description of what the word epigenetics, "upon" genetics
+%     \item While genetic sequence is stable, methylation is a dynamic state which depends on factors, enviroment etc.
+%     \item The state of methylation can change/effect the expression of genes, where methylation = silencing.
+%     \item Methylation isn't random, with strong correlation between methylation of specific CpG sites with specific factors
+%     \item This means methylation status can be used as a biomarker for indicating and reporting on enviromental exposures and report on health outcomes
+%     \item Status of methylation sites can determine health outcomes, including cancer risk, CVD, diabetes, etc.
+% \end{itemize}
+
+\subsubsection{DNAm Platforms}
+\begin{itemize}
+    \item Two types of DNAm platform, illumina 450k and illumina EPIC
+    \item \(\sim\)28 million CpG sites in the human genome, platforms choose specific sites to ranked
+    \item Cell type of sample matters, different cells with have different methylation. Typically whole blood is used, good general methylation signal.
+\end{itemize}
+
+\subsection{Machine Learning in Epigenetics}
+\begin{itemize}
+    \item applications
+    \item citations
+\end{itemize}
+Machine learning has already seen use in many areas of clinical epigenetics, including prognosis and diagnosis of cancer, cardiovascular diseases
+\begin{itemize}
+    \item broad description of statistics produced
+    \item classification/labels
+    \item regression/scores
+\end{itemize}
+
+\begin{itemize}
+    \item algorithms
+\end{itemize}
+\begin{enumerate}
+    \item Malta et al. \cite{malta2018machine} proposed a method for assessing oncogenic dedifferentiation (cells becoming cancerous). This approach seeks to model a "stemness index" which indicates how similar a cell is to stem cell - a trait found in cancerous cells. Of relevance is the developed epigenetic approach using one-class logistic regression. The training features consisted of 219 hypermethylated CpG sites associated with stem cells. Training data only consisted of a single, positive, class: stem cells. The resulting model can then be fed non-stem cells to compare how similar they are to stem cells, i.e. cancerous cells.
+
+    \item Adorj\'an et al. \cite{adorjan2002tumour} proposed a method for using DNA methylation to classify cancer tissues. CpG sites were ranked using a two sample t-test, and then fed into a support vector machine. Models were evaluated using the average of 50 runs of 8-fold cross-validation. The top two CpG sites could classify leukaemia from healthy cells with 84\% accuracy, while the top 60 sites achieve 94\% accuracy.
+
+    \item Dogan et al. \cite{dogan2018integrated} proposed a method for integrated genetic and epigenetic classification of coronary heart disease. The dataset consisted of 1,545 indiviudals. An approach combining undersampling and ensemble learning was used to address class imbalance \cite{liu2008exploratory}. Point biserial correlation and Pearson correlation were used for feature selection, resulting in 107,799 CpG sites for training. Random Forest classifiers were then trained
+\end{enumerate}
+
+\subsection{Smoking Algorithms}
+In the context of smoking, the two most significant machine learning epigenetic algorithms use Elastic Net regression.
+
+\subsubsection{Elastic Net Regression}
+Elastic Net \cite{zou2005regularization} is a regularised form of linear regression (and in turn, logistic regression) that includes two additional penalty terms.
+Given \(p\) features, we find \(\beta\) that produces an output:
+\[\hat{y} = \sum_{i=1}^{p} \beta_ix_i\]
+and minimises the function:
+\[\mathcal{L}(y, \hat{y}, \beta) = ||y - \hat{y}||_2^2
+    + \alpha\lambda||\beta||_1
+    + \alpha(1 - \lambda)||\beta||_2^2\]
+where:
+\[||\beta||_1 = \sum_{i=1}^{p} |\beta_i|\]
+and:
+\[||\beta||_2 = \sqrt{\sum_{i=1}^{p} \beta_i^2}\]
+We can see this is simply mean-squared error, with the \(L_1\)-norm and \(L_2\)-norm included as penalisation terms on \(\beta\). This in turn is a combination of two other modifications to linear regression: lasso and ridge regression \cite{tibshirani1996regression, hoerl1970ridge}.
+
+\begin{itemize}
+    \item effect of \(L_1\)-norm: sparse solutions
+    \item effect of \(L_2\)-norm: grouping effect
+    \item why this makes sense for epigenetics
+    \item used a lot in epigenetics (biological age)
+\end{itemize}
+
+\vspace{1cm}
+\begin{itemize}
+    \item dataset/cohort/demographic
+    \item algorithms
+    \item result/stat it produces
+    \item limitations
+\end{itemize}
+
+\subsubsection{DNAmPACKYRS}
+Lu et al. proposed DNAmPACKYRS as a DNA methylation based score for calculatign pack years. This score was originally developed as surrogate biomarker for use in the DNAm GrimAge and DNAm GrimAge v2 epigenetic clocks \cite{lu2019dna,lu2022dna}. DNAm GrimAge is a regression model for estimating mortality risk. The DNAm GrimAge score is calculated using covariates sex, age, 7 surrogate biomarkers of plasma proteins, and of relevance, the surrogate biomarker for smoking pack-years: DNAmPACKYRS. Elastic Net regression was used to train both DNAm GrimAge and the surrogate biomarkers of plasma proteins and pack-years. Training data consisted of 1731 individuals from the Framingham Heart Study \cite{doi:10.2105/AJPH.41.3.279}. The intersection of sites available on Illumina 450k and Illumina EPIC were chosen as the available CpG sites for training. This was to ensure compatability and future-proofing with new datasets. A total of 450161 CpG sites were available. 10-fold cross-validation was used for hyperparameter tuning the regularisation strength of the Elastic Net model. This resulted in the DNAmPACKYRS score which used 172 CpG sites.
+
+\begin{itemize}
+    \item improvement vs self-reported data
+    \item limitation 1: poor performance of never vs ex and/or ex vs current
+    \item limitation 2: see mCigarette
+\end{itemize}
+
+\subsubsection{mCigarette}
+\begin{itemize}
+    \item (?) seeking to address not being able to differentiate never smokers and ex smokers
+    \item 17865 indiviudals
+    \item filtered CpG sites to FDR \(< 0.05\) \((n = 18760)\)
+    \item elastic net regression
+    \item 10-fold cross-validation, \(\lambda = 0.012577\)
+    \item 1255 CpG sites used in model
+    \item in validation cohort, AUCs of Current vs Never: 0.98, Current vs Former: 0.90, Former vs Never: 0.85
+    \item limitation 2: choice of ground truth (sr pack-years) is potentially confusing for the model
+\end{itemize}
+
+\subsection{Aim of This Work}
+\begin{itemize}
+    \item used smoking status label instead of pack-years
+    \item try improve on classification of never vs ex and ex vs current
+\end{itemize}
+
+\section{Method}
+
+\section{Results}
+
+\addcontentsline{toc}{section}{References}
+\printbibliography
+
+\end{document}
