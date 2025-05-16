@@ -4,8 +4,12 @@
 % \usepackage{parskip}
 \usepackage[backend=biber, sorting=none]{biblatex}
 \usepackage{graphicx}
+\usepackage{svg}
+\usepackage{chemfig}
+\usepackage{nameref}
 \usepackage{hyperref}
 \usepackage{tabularx}
+\usepackage{subcaption}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
@@ -17,71 +21,107 @@
 
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\softmax}{softmax}
 
 \begin{document}
 \doublespacing
 
-% \begin{titlepage}
-%     \centering
-%     \singlespacing
-%     \vspace*{1cm}
+% \begin{figure}
+%     \begin{subfigure}{0.49\textwidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{}
+%         \caption{}
+%     \end{subfigure}
+%     \caption{}
+% \end{figure}
 
-%     \includegraphics[width=0.2\textwidth]{University_of_Canterbury_logo.svg.png}\\[1.5cm]
+\begin{titlepage}
+    \centering
+    \singlespacing
+    \vspace*{1cm}
 
-%     \Huge
-%     \textbf{COSC681 - AI Project}\\[1.5cm]
+    \includegraphics[width=0.2\textwidth]{University_of_Canterbury_logo.svg.png}\\[1.5cm]
 
-%     \LARGE
-%     Classifying smoking history with epigentic-trained machine learning\\[2cm]
+    \Huge
+    \textbf{COSC681 - AI Project}\\[1.5cm]
 
-%     \Large
-%     \textbf{Lachlan Jones}\\[0.5cm]
-%     2025
+    \LARGE
+    Classifying smoking history with epigentic-trained machine learning\\[2cm]
 
-%     \vfill
+    \Large
+    \textbf{Lachlan Jones}\\[0.5cm]
+    2025
 
-%     \Large
-%     Department of Computer Science\\
-%     University of Canterbury
-% \end{titlepage}
+    \vfill
 
-% \pagenumbering{roman}
+    \Large
+    Department of Computer Science\\
+    University of Canterbury
+\end{titlepage}
 
-% \begin{abstract}
+\pagenumbering{roman}
 
-% \end{abstract}
+\begin{abstract}
 
-% \newpage
-% \tableofcontents
+\end{abstract}
 
-% \listoffigures
+\newpage
+\tableofcontents
 
-% \listoftables
+\listoffigures
 
-% \newpage
-% \pagenumbering{arabic}
+\listoftables
+
+\newpage
+\pagenumbering{arabic}
 
 \section{Introduction}
 \subsection{Tobacco Related Health Issues}
 The harms associated with tobacco use are well recognised. Tobacco kills up to half its users who do not quit and more than 8 million people per year, including an estimated 1.3 million non-smokers due to second hand smoke \cite{who_tobacco}. Smoking causes cancer, heart and lung disease, stroke, type 2 diabetes, and harmful reproductive effects \cite{hhs_smoking_2014}. There is a growing body of evidence suggesting a causal relationship between smoking and mental health issues \cite{taylor2019smoking}. Clearly, such negative impacts on patient health due to tobacco use are undesirable, just as they are avoidable. For these reason, tobacco usage is of great concern to health professionals. The World Health Organization asserts that surveillance is key for addressing the tobacco epidemic, as tracking tobacco usage indicates how to shape policy \cite{who_tobacco}.
 
 \subsection{Self-Reported Smoking Status}
-Current surveillance relies on self-reported smoking data. That is, a patient's smoking history is recorded by them personally recalling and reporting. It is a convenient and cost-effective way of collecting smoking statistics. There are two main types of smoking data used to measure tobacco exposure: smoking status and smoking pack-years. Smoking status is label based on the history and habits of tobacco use. Indiviudals are binned into never smokers, ex smokers and current smokers. Smoking pack-years is a calculated score that tries to quantify tobacco use. It is calculated as the number of packs of cigarettes smoked per day multiplied by years of smoking \cite{NCI_pack_year}. For example, one pack-year is one pack per day for one year, or half a pack per day for two years. Therefore, smoking pack-years quantifies both the degree of exposure and duration of exposure equally.
+Current surveillance relies on self-reported smoking data. That is, a patient's smoking history is recorded by them personally recalling and reporting. It is a convenient and cost-effective way of collecting smoking statistics. There are two main types of smoking data used to measure tobacco exposure: smoking status and smoking pack-years. Smoking status is label based on the history and habits of tobacco use. Indiviudals are binned into never-smokers, ex-smokers and current smokers. Smoking pack-years is a calculated score that tries to quantify tobacco use. It is calculated as the number of packs of cigarettes smoked per day multiplied by years of smoking \cite{NCI_pack_year}. For example, one pack-year is one pack per day for one year, or half a pack per day for two years. Therefore, smoking pack-years quantifies both the degree of exposure and duration of exposure equally.
 
-Self-reported smoking data has several limitations. Relying on individuals recounting information can introduce bias. Self-reported smoking data is prone to inaccuracy due to stigma, recall bias and a lack of information on second-hand exposure \cite{park2015correlation}. That is, the social pressure to deny partaking in stigmatised behaviours, forgetting details and information, and not being aware of sources of second-hand exposure can all influence the results of self-reported smoking data. A method of using objective evidence to determine smoking history could overcome these issues. On the other hand, the inaccuracy of self-reported smoking data can differ between population groups. For example, studies suggest that teens are more likely to provide false responses in smoking surveys \cite{park2015correlation}. Moreover, tobacco consumption differs between social groups, with smoking more prevalent in low-education and low-socio-economic groups \cite{cdc2019_smoking}.
+Self-reported smoking data has several limitations. Relying on individuals recounting information can introduce bias. Self-reported smoking data is prone to inaccuracy due to stigma, recall bias and a lack of information on second-hand exposure \cite{park2015correlation, gorber2009accuracy}. That is, the social pressure to deny partaking in stigmatised behaviours, forgetting details and information, and not being aware of sources of second-hand exposure can all influence the results of self-reported smoking data. A method of using objective evidence to determine smoking history could overcome these issues. On the other hand, the inaccuracy of self-reported smoking data can differ between population groups. For example, studies suggest that teens are more likely to provide false responses in smoking surveys \cite{park2015correlation}. Moreover, tobacco consumption differs between social groups, with smoking more prevalent in low-education and low-socio-economic groups \cite{cdc2019_smoking}.
 
 To this end, developing diagnostic tests to collect smoking data that do not share the biases of self-reported methods are of interest for improving the monitoring of health. One such approach is the use of epigenetic biomarkers.
 
 \subsection{Epigenetics}
-Epi- is a Greek prefix meaning upon or on. So, epigenetics is the study of factors on top of or upon genetics. Specifically, it is the study of how enviromental factors and behaviours affect and modify your genetics and their expression. We consider one type of epigenetic modification: DNA methylation.
+Epi- is a Greek prefix meaning upon or on. Therefore, epigenetics is the study of factors on top of or upon genetics. Specifically, it is the study of how environmental factors and behaviours affect, modify and regulate your genetics and their expression. We consider one type of epigenetic modification: DNA methylation.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{512px-DNA_chemical_structure.svg.png}
+    \caption*{Chemical structure of DNA \cite{ball_DNA_structure}}
+\end{figure}
 
 \subsubsection{DNA Methylation}
-At a high level, DNA is a sequence of letters that provide genetic instructions. Like a human reading a book, strings of these letters are converted into information that tells cells how to function. More precisely, these letters are one of four nucleotide bases: adenine (A), cytosine (C), guanine (G) and thymine (T). To form the sequence, these bases are attatched to a deoxyribose sugar and connected by a phosphate molecule, called the sugar-phosphate backbone. Of relevance is the phosphate molecule, specifically for when a cytosine is directly followed by a guanine in the sequence. A phosphate bonding a cytosine and a guanine (called a CpG site) creates a chemical structure which allows methyl groups to attatch. This process is an epigenetic modification called DNA methylation (DNAm). As a biomarker, we measure methylation at a CpG site as a float between 0 and 1, measuring the percentage of methylation at that site.
+At a high level, DNA is a sequence of letters that provide genetic instructions. Like a human reading a book, strings of these letters are converted into information that tells cells how to function. More precisely, these letters are one of four nucleotide bases: adenine (A), cytosine (C), guanine (G) and thymine (T). To form the sequence, these bases are attached to a deoxyribose sugar and connected by a phosphate molecule, called the sugar-phosphate backbone. Of relevance is the phosphate molecule, specifically for when a cytosine is directly followed by a guanine in the sequence. A phosphate bonding a cytosine and a guanine (called a CpG site) creates a chemical structure which allows methyl groups to attach. This process is an epigenetic modification called DNA methylation (DNAm). As a biomarker, we measure methylation at a CpG site as a float between 0 and 1, measuring the percentage of methylation at that site.
 
-While the genetic sequence of DNA is stable, methylation is not. It is a dynamic state that depends on factors such has behaviours and enviromental exposure \textbf{(add citation?)}. Exposure to such factors increases methylation of CpG sites, while sufficent lack of exposure causes methylation to decrease over time \textbf{(add citation?)}. As previously mentioned, DNA methylation affects the expression of genes. Methylation at a CpG site can silence the expression of the gene that site is located in \textbf{(add citation?)}. More methylation at a site leads to stronger silencing of that gene. Moreover, DNA methylation is not random. There is strong correlation between methylation of specific sites with specific factors \textbf{(add citation?)}. This means that DNA methylation of CpG sites can be used as a biomarker indicative of the factors that caused it, while also describing changes in cellular function. Therefore, DNA methylation is a biomarker not only useful for reporting on enviromental exposures, but also predicting future health outcomes or risks. Examples of this include \textbf{list some topics of epigenetics-only papers} \textbf{(add citation?)}. Furthermore, DNA methylation is not self-reported, and therefore overcomes the biases associated with self-reported data. 
+While the genetic sequence of DNA is stable, methylation is not. It is a dynamic state that depends on factors such has behaviours and environmental exposure \textbf{(add citation?)}. Exposure to such factors increases methylation of CpG sites, while sufficent lack of exposure causes methylation to decrease over time \textbf{(add citation?)}. As previously mentioned, DNA methylation affects the expression of genes. Methylation at a CpG site can silence the expression of the gene that site is located in \textbf{(add citation?)}, where more methylation at a site leads to stronger silencing. Moreover, DNA methylation is not random. There is strong correlation between methylation of specific sites with specific factors \textbf{(add citation?)}. This means that DNA methylation of CpG sites can be used as a biomarker indicative of the factors that caused it, while also describing changes in cellular function. Therefore, DNA methylation is a biomarker not only useful for reporting on environmental exposures, but also predicting future health outcomes or risks. Examples of this include prediction of cardiovascular diseases \cite{cameron2023dna}, neurological diseases \cite{cells11213439}, type 2 diabetes \cite{cheng2023development}, pace of aging \cite{10.7554/eLife.73420}, and cancer \cite{luo2020circulating}. Furthermore, DNA methylation is not self-reported, and therefore overcomes the biases associated with self-reported data.
 
-Altogether, this motivates the use of DNA methylation data to develop methods for collecting smoking history of indiviudals. 
+Altogether, this motivates the use of DNA methylation data to develop methods for collecting smoking history of indiviudals. Work using such data is referred to as an epigenome-wide association study (EWAS).
 
+\begin{figure}
+    \setcounter{figure}{\numexpr\value{figure}-1}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \hspace*{11mm}
+        \chemfig{*6(-\chembelow{N}{H}-(=O)-N=(-NH_2)-=)}
+        \vspace{3mm}
+        \caption{Cytosine}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \chemfig{*6(-\chembelow{N}{H}-(=O)-N=(-NH_2)-(-H_3C)=)}
+        \vspace{3mm}
+        \caption{5-Methylcytosine}
+    \end{subfigure}
+    \caption*{Modification of Cytosine into 5-Methylcytosine caused by DNA methylation}
+\end{figure}
+
+\subsubsection{DNAm Platforms}
+The human genome contains \(\sim\!28\) million CpG sites. This is often a computationally infeasible domain for a dataset, due to massive dataset sizes, processing requirements, and noise contained in the signal. Instead, most EWAS use a biologically relevant and informative subset of CpG sites. There are two commonly chosen platforms used to achieve this: Illumina 450k \cite{illumina2012methylation450} and Illumina EPIC \cite{illumina2015methylationepic}. 450k was the first platform developed by Illumina, consisting of \num{485577} CpG sites chosen for their quality and usefulness. The EPIC platform was developed as a successor, increasing to \num{865859} CpG sites. However, only around \(>90\%\) of the sites were retained from 450k.
 
 % \vspace{1cm}
 % \begin{itemize}
@@ -92,65 +132,56 @@ Altogether, this motivates the use of DNA methylation data to develop methods fo
 %     \item While genetic sequence is stable, methylation is a dynamic state which depends on factors, enviroment etc.
 %     \item The state of methylation can change/effect the expression of genes, where methylation = silencing.
 %     \item Methylation isn't random, with strong correlation between methylation of specific CpG sites with specific factors
-%     \item This means methylation status can be used as a biomarker for indicating and reporting on enviromental exposures and report on health outcomes
+%     \item This means methylation status can be used as a biomarker for indicating and reporting on environmental exposures and report on health outcomes
 %     \item Status of methylation sites can determine health outcomes, including cancer risk, CVD, diabetes, etc.
 % \end{itemize}
 
-\subsubsection{DNAm Platforms}
-\begin{itemize}
-    \item Two types of DNAm platform, illumina 450k and illumina EPIC
-    \item \(\sim\)28 million CpG sites in the human genome, platforms choose specific sites to ranked
-    \item Cell type of sample matters, different cells with have different methylation. Typically whole blood is used, good general methylation signal.
-\end{itemize}
+% \subsubsection{DNAm Platforms}
+
+% \begin{itemize}
+%     \item Two types of DNAm platform, illumina 450k and illumina EPIC
+%     \item \(\sim\)28 million CpG sites in the human genome, platforms choose specific sites to ranked
+%     \item Cell type of sample matters, different cells with have different methylation. Typically whole blood is used, good general methylation signal.
+% \end{itemize}
 
 \subsection{Machine Learning in Epigenetics}
-\begin{itemize}
-    \item applications
-    \item citations
-\end{itemize}
-Machine learning has already seen use in many areas of clinical epigenetics, including prognosis and diagnosis of cancer, cardiovascular diseases
-\begin{itemize}
-    \item broad description of statistics produced
-    \item classification/labels
-    \item regression/scores
-\end{itemize}
+Broadly, machine learning algorithms are split into one of two tasks: regression or classification. The most significant distinction between these two tasks is the choice of supervised learning labels. Regression algorithms are trained against continuous, numeric scores, while classification algorithms are trained against discrete class labels. The choice of label in turn determines the output produced by the algorithm.
+Machine learning has already seen use in many areas of clinical epigenetics. We begin with a review of some developed methods, addressing both classification and regression tasks.
 
-\begin{itemize}
-    \item algorithms
-\end{itemize}
+\subsubsection{Applications} \label{sec:ml-examples}
 \begin{enumerate}
     \item Malta et al. \cite{malta2018machine} proposed a method for assessing oncogenic dedifferentiation (cells becoming cancerous). This approach seeks to model a "stemness index" which indicates how similar a cell is to stem cell - a trait found in cancerous cells. Of relevance is the developed epigenetic approach using one-class logistic regression. The training features consisted of 219 hypermethylated CpG sites associated with stem cells. Training data only consisted of a single, positive, class: stem cells. The resulting model can then be fed non-stem cells to compare how similar they are to stem cells, i.e. cancerous cells.
 
     \item Adorj\'an et al. \cite{adorjan2002tumour} proposed a method for using DNA methylation to classify cancer tissues. CpG sites were ranked using a two sample t-test, and then fed into a support vector machine. Models were evaluated using the average of 50 runs of 8-fold cross-validation. The top two CpG sites could classify leukaemia from healthy cells with 84\% accuracy, while the top 60 sites achieve 94\% accuracy.
 
-    \item Dogan et al. \cite{dogan2018integrated} proposed a method for integrated genetic and epigenetic classification of coronary heart disease. The dataset consisted of 1,545 indiviudals. An approach combining undersampling and ensemble learning was used to address class imbalance \cite{liu2008exploratory}. Point biserial correlation and Pearson correlation were used for feature selection, resulting in 107,799 CpG sites for training. Random Forest classifiers were then trained
+    \item Dogan et al. \cite{dogan2018integrated} proposed a method for integrated genetic and epigenetic classification of coronary heart disease. The training dataset consisted of 1,545 indiviudals. An approach combining undersampling and ensemble learning \cite{liu2008exploratory} was used to address class imbalance, creating 8 training sub-datasets. Point biserial correlation and Pearson correlation were used for feature selection, resulting in 107,799 CpG sites for training. These features were ranked using ROC AUC. Random Forest classifiers were then trained on the 8 training sub-datasets, with majority voting used for ensembling. Hyperparameters were tuned using 10-fold cross-validation. The final model used 4 CpG cites, two genetic variables, age and sex. This achieved an accuracy, sensitivity and specificity of 78\%, 0.75 and 0.80, respectively.
 \end{enumerate}
 
 \subsection{Smoking Algorithms}
-In the context of smoking, the two most significant machine learning epigenetic algorithms use Elastic Net regression.
+In the context of smoking, the two most significant machine learning epigenetic scores use Elastic Net regression.
 
 \subsubsection{Elastic Net Regression}
-Elastic Net \cite{zou2005regularization} is a regularised form of linear regression (and in turn, logistic regression) that includes two additional penalty terms.
-Given \(p\) features, we find \(\beta\) that produces an output:
-\[\hat{y} = \sum_{i=1}^{p} \beta_ix_i\]
+Elastic Net \cite{zou2005regularization} is a regularised form of linear regression that includes two additional penalty terms.
+Given \(n\) examples, \(p\) features with inputs \(x \in \mathbb{R}^{n \times (p + 1)}\) and corresponding ground-truth \(y \in \mathbb{R}^n\), we find coefficients \(\beta \in \mathbb{R}^{p + 1}\) that produces an output:
+\[\hat{y} = x \beta \in \mathbb{R}^{p + 1}\]
 and minimises the function:
-\[\mathcal{L}(y, \hat{y}, \beta) = ||y - \hat{y}||_2^2
-    + \alpha\lambda||\beta||_1
-    + \alpha(1 - \lambda)||\beta||_2^2\]
+\[\mathcal{L}(y, \hat{y}, \beta) = ||y - \hat{y}||_2^2 + \alpha\lambda||\beta||_1 + \alpha\frac{1 - \lambda}{2}||\beta||_2^2\]
 where:
 \[||\beta||_1 = \sum_{i=1}^{p} |\beta_i|\]
 and:
 \[||\beta||_2 = \sqrt{\sum_{i=1}^{p} \beta_i^2}\]
-We can see this is simply mean-squared error, with the \(L_1\)-norm and \(L_2\)-norm included as penalisation terms on \(\beta\). This in turn is a combination of two other modifications to linear regression: lasso and ridge regression \cite{tibshirani1996regression, hoerl1970ridge}.
 
-\begin{itemize}
-    \item effect of \(L_1\)-norm: sparse solutions
-    \item effect of \(L_2\)-norm: grouping effect
-    \item why this makes sense for epigenetics
-    \item used a lot in epigenetics (biological age)
-\end{itemize}
+We can see this is simply mean-squared error, with the \(L_1\)-norm and \(L_2\)-norm included as penalisation terms on \(\beta\). The two hyperparameters \(\alpha\) and \(\lambda\) control the strength of regularisation and ratio between \(L_1\)-norm and \(L_2\)-norms, respectively. Elastic Net is a combination of two other modifications to linear regression: lasso \cite{tibshirani1996regression} and ridge \cite{hoerl1970ridge} regression. The two mathematical regularisation terms have interpretable effects on the convergence of \(\beta\). Gradient updates for \(||\beta||_1\) are uniform for all non-zero values of \(\beta_i\), which typically results in most \(\beta_i\) set to zero, with some having large values. This is referred to as a sparse solution. Gradient updates for \(||\beta||_2^2\) are large for large \(\beta_i\), and small for small \(\beta_i\), which typically results in all \(\beta_i\) having similar values. This is referred to as shrinkage. Together, this results in Elastic Net models promoting the grouping effect, where strongly related features are all included or excluded together. This grouping effect is particularly useful when \(p > n\), as it provides better feature selection than lasso \cite{zou2005regularization}. Because of this, Elastic Net sees wide use in epigenetics, with biological age clocks being one area of particular use \cite{teschendorff2025epigenetic}.
 
-\vspace{1cm}
+\subsubsection{DNAmPACKYRS}
+Lu et al. \cite{lu2019dna} proposed DNAmPACKYRS as a DNA methylation based score for calculating pack-years. This score was originally developed as surrogate biomarker for use in the DNAm GrimAge and DNAm GrimAge v2 epigenetic clocks \cite{lu2019dna,lu2022dna}. DNAm GrimAge is a regression model for estimating mortality risk. The DNAm GrimAge score is calculated using covariates sex, age, 7 surrogate biomarkers of plasma proteins, and of relevance, the surrogate biomarker for smoking pack-years: DNAmPACKYRS. Elastic Net regression was used to train both DNAm GrimAge and the surrogate biomarkers of plasma proteins and pack-years. Training data consisted of 1731 individuals from the Framingham Heart Study dataset \cite{doi:10.2105/AJPH.41.3.279}. Indiviudals from this dataset had a mean age of 66 years. 54\% of individuals were female, leaving 45\% as male. The intersection of sites available on Illumina 450k and Illumina EPIC were chosen as the available CpG sites for training. This was to ensure compatability and future-proofing with new datasets. A total of \num{450161} CpG sites were available. 10-fold cross-validation was used for hyperparameter tuning the regularisation strength of the Elastic Net model. This resulted in the DNAmPACKYRS score which used 172 CpG sites.
+
+As surrogate biomarker for lifespan, DNAmPACKYRS performs better than self-reported pack-years. Firstly, DNAmPACKYRS can be used to predict lifespan in never-smokers \cite{lu2019dna}, whereas self-reported pack-years cannot (all self-reported values would be 0). Additionally, DNAmPACKYRS is a more significant predictor of lifespan than self-reported pack-years. Across 4 out of 5 datasets DNAmPACKYRS had a smaller Cox regression p-values when compared to self-reported pack-years \cite{lu2019dna}.
+% \(8.10\mathrm{e}{-23}\) vs \(1.12\mathrm{e}{-11}\), \(8.51\mathrm{e}{-5}\) vs \(2.13\mathrm{e}{-3}\), \(7.17\mathrm{e}{-12}\) vs \(7.03\mathrm{e}{-12}\), \(2.1\mathrm{e}{-19}\) vs \(6.4\mathrm{e}{-19}\), and \(5.33\mathrm{e}{-4}\) vs \(1.78\mathrm{e}{-1}\), respectively. 
+
+There are some limitations with the DNAmPACKYRS score. Since DNAmPACKYRS is only evaluated as a surrogate biomarker in the GrimAge paper, there is no reporting on its performance of predicting smoking status. However, this can be done independently (see \ref{sec:val-cohort}). When performed, we can see that while DNAmPACKYRS achieves good predictive performance seperating never-smokers from current smokers (ROC AUC = 0.991) and ex-smokers from current smokers (ROC AUC = 0.915), the score is not optimised for seperating never-smokers from ex-smokers (ROC AUC = 0.798). Additionally, the choice of self-reported pack-years as a regression label introduces a source of inaccuracy, discussed below (see \ref{sec:mcigarette}: \nameref{sec:mcigarette}).
+
+Notes for DNAmPACKYRS/mCigarette:
 \begin{itemize}
     \item dataset/cohort/demographic
     \item algorithms
@@ -158,18 +189,13 @@ We can see this is simply mean-squared error, with the \(L_1\)-norm and \(L_2\)-
     \item limitations
 \end{itemize}
 
-\subsubsection{DNAmPACKYRS}
-Lu et al. proposed DNAmPACKYRS as a DNA methylation based score for calculatign pack years. This score was originally developed as surrogate biomarker for use in the DNAm GrimAge and DNAm GrimAge v2 epigenetic clocks \cite{lu2019dna,lu2022dna}. DNAm GrimAge is a regression model for estimating mortality risk. The DNAm GrimAge score is calculated using covariates sex, age, 7 surrogate biomarkers of plasma proteins, and of relevance, the surrogate biomarker for smoking pack-years: DNAmPACKYRS. Elastic Net regression was used to train both DNAm GrimAge and the surrogate biomarkers of plasma proteins and pack-years. Training data consisted of 1731 individuals from the Framingham Heart Study \cite{doi:10.2105/AJPH.41.3.279}. The intersection of sites available on Illumina 450k and Illumina EPIC were chosen as the available CpG sites for training. This was to ensure compatability and future-proofing with new datasets. A total of 450161 CpG sites were available. 10-fold cross-validation was used for hyperparameter tuning the regularisation strength of the Elastic Net model. This resulted in the DNAmPACKYRS score which used 172 CpG sites.
+\subsubsection{mCigarette} \label{sec:mcigarette}
+Chybowska et al. \cite{chybowska2025blood} proposed mCigarette as a DNA methylation based score for calculating pack-years. This score was developed to overcome the limitations of self-reported smoking data, as well as the modest performance of seperating never-smokers from ex-smokers.
+
+Training data consisted of \num{17865} indiviudals from the Generation Scotland dataset \cite{smith2006generation}, which was developed on the Illumina EPIC platform. Individuals from this dataset had a mean age of 47.6 years. 59.1\% of the individuals were female. CpG sites were filtered based on statisticcal association with tobacco use at a false discovery rate (FDR) \(< 0.05\), resulting in \num{18760} CpG sites per indiviudal. This filtering was ran in a dataset seperate to the training dataset, using the Illumina 450k platform. Elastic Net regression was then used to train the mCigarette score. Hyperparameters were tuned using 10-fold cross-valdiation, which set \(\lambda = 0.012577\) and resulting in a model using \num{1255} CpG sites.
 
 \begin{itemize}
-    \item improvement vs self-reported data
-    \item limitation 1: poor performance of never vs ex and/or ex vs current
-    \item limitation 2: see mCigarette
-\end{itemize}
-
-\subsubsection{mCigarette}
-\begin{itemize}
-    \item (?) seeking to address not being able to differentiate never smokers and ex smokers
+    \item (?) seeking to address not being able to differentiate never-smokers and ex-smokers
     \item 17865 indiviudals
     \item filtered CpG sites to FDR \(< 0.05\) \((n = 18760)\)
     \item elastic net regression
@@ -187,7 +213,289 @@ Lu et al. proposed DNAmPACKYRS as a DNA methylation based score for calculatign 
 
 \section{Method}
 
-\section{Results}
+\subsection{Algorithm}
+We begin by transforming Elastic Net from a regression problem into a classification problem. In the binary classification case, this is a straightforward replacement of the mean-square error term in the loss function with a binary-cross entropy error term, alongside transforming the linear prediction into a probability via the sigmoid function. However, in the multiclass classification case the modification also affects the regularisation terms.
+
+Given \(n\) examples, \(p\) features, \(K\) classes with inputs \(x \in \mathbb{R}^{n \times (p + 1)}\) and corresponding ground-truth (as one-hot encoded vectors) \(y \in \mathbb{R}^{n \times K}\), we find coefficients \(\beta \in \mathbb{R}^{K \times (p + 1)}\) that produces logits:
+\[z = x \beta^\mathsf{T} \in \mathbb{R}^{n \times K}\]
+we transform this into probabilities with the softmax function:
+\[\softmax(t_1,... , t_k) =
+    \begin{bmatrix}
+        \frac{\exp(t_1)}{\sum_{j=1}^{K} \exp(t_j)} \\
+        \vdots                                     \\
+        \frac{\exp(t_k)}{\sum_{j=1}^{K} \exp(t_j)}
+    \end{bmatrix}
+\]
+The loss function then becomes:
+\[\mathcal{L}(y, z, \beta) = -\frac{1}{n}\sum_{i=1}^{n} y_i \cdot \log(\softmax(z_i)) + \alpha\sum_{k=1}^{K}(\lambda||\beta_k||_1 + (1 - \lambda)||\beta_k||_2^2)\]
+where the \(L_1\)-norm and \(L_2\)-norm are as before.
+
+Colloquially, this model can be thought of as training \(K\) indiviudal logistic regression sub-classifiers, where each sub-classifier is tasked only with predicting one of the \(K\) classes. The softmax function ensures that for each example, the \(K\) predicted probabilities will all add to 1. Regularisation terms work as before, but are now per-sub-classifier.
+
+Implementation of multi-class Elastic Net logistic regression is provided by scikit-learn \cite{scikit-learn}, via the \verb|linear_model.LogisticRegression| class.
+
+\subsection{Datasets}
+\begin{itemize}
+    \item Cohort 1: discovery
+          \begin{itemize}
+              \item Illumina 450k
+              \item all males
+              \item mean age 72
+              \item 235 never smokers, 599 ex smokers, 109 current smokers
+              \begin{itemize}
+                \item 
+              \end{itemize}
+              \item 90/10 train/test split
+          \end{itemize}
+    \item Cohort 2: validation
+          \begin{itemize}
+              \item Illumina EPIC
+              \item
+          \end{itemize}
+\end{itemize}
+
+\subsection{Hardware and Software}
+\begin{itemize}
+    \item Apple M2
+    \item Memory (and limitations)
+    \item Python version and package versions
+\end{itemize}
+
+\subsection{Pre-Processing}
+\begin{itemize}
+    \item Limiting both datasets to the intersection of 450k and EPIC
+    \item Formatting to csv/transposing for ML
+    \item Kruskal-Wallis feature selection
+\end{itemize}
+
+\subsection{Training}
+\begin{itemize}
+    \item Cross Validation
+\end{itemize}
+
+\section{Results} \label{sec:results}
+
+\subsection{Model Performance}
+
+\begin{itemize}
+    \item Confusion Matrices:
+    \begin{itemize}
+        \item Good accuracy/tpr across all three classes
+    \end{itemize}
+    \item 
+\end{itemize}
+
+\begin{figure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_cm.png}
+        \caption{CM}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_cm_n.png}
+        \caption{CM Normalised}
+    \end{subfigure}
+    \caption{Confusion Matrices (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_1v3_roc.png}
+        \caption{Seperation of never vs current smokers by current smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_3v1_roc.png}
+        \caption{Seperation of never vs current smokers by never smoker sub-classifier}
+    \end{subfigure}
+    \caption{Never smoker vs current smoker sub-classifiers performance (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_1v2_roc.png}
+        \caption{Seperation of never vs ex smokers by ex smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_2v1_roc.png}
+        \caption{Seperation of never vs ex smokers by never smoker sub-classifier}
+    \end{subfigure}
+    \caption{Never smoker vs ex smoker sub-classifiers performance (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_2v3_roc.png}
+        \caption{Seperation of ex vs current smokers by current smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_3v2_roc.png}
+        \caption{Seperation of ex vs current smokers by ex smoker sub-classifier}
+    \end{subfigure}
+    \caption{Ex smoker vs current smoker sub-classifiers performance (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{cohort1_macro_ovo_roc.png}
+    \caption{Class seperation of classifier (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_1_boxplot.png}
+        \caption{Never smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_2_boxplot.png}
+        \caption{Ex smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \par\vspace{0.5em}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_3_boxplot.png}
+        \caption{Current smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \caption{Boxplots of probability distributions (Cohort 1)}
+\end{figure}
+
+\subsection{External Validation Cohort} \label{sec:val-cohort}
+\subsubsection{Model Performance}
+\begin{figure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_cm.png}
+        \caption{CM}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_cm_n.png}
+        \caption{CM Normalised}
+    \end{subfigure}
+    \caption{Confusion Matrices (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_1v3_roc.png}
+        \caption{Seperation of never vs current smokers by current smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_3v1_roc.png}
+        \caption{Seperation of never vs current smokers by never smoker sub-classifier}
+    \end{subfigure}
+    \caption{Never smoker vs current smoker sub-classifiers performance (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_1v2_roc.png}
+        \caption{Seperation of never vs ex smokers by ex smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_2v1_roc.png}
+        \caption{Seperation of never vs ex smokers by never smoker sub-classifier}
+    \end{subfigure}
+    \caption{Never smoker vs ex smoker sub-classifiers performance (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_2v3_roc.png}
+        \caption{Seperation of ex vs current smokers by current smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_3v2_roc.png}
+        \caption{Seperation of ex vs current smokers by ex smoker sub-classifier}
+    \end{subfigure}
+    \caption{Ex smoker vs current smoker sub-classifiers performance (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{cohort2_macro_ovo_roc.png}
+    \caption{Class seperation of classifier (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_1_boxplot.png}
+        \caption{Never smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_2_boxplot.png}
+        \caption{Ex smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \par\vspace{0.5em}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_3_boxplot.png}
+        \caption{Current smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \caption{Boxplots of probability distributions (Cohort 2)}
+\end{figure}
+
+\subsubsection{Comparison with Prior Results}
+
+
+\subsection*{Choices made in development}
+\begin{itemize}
+    \item class weight balancing
+    \item feature pruning for cohorts, ensuring compatability
+    \item direction of discovery/validation cohorts, sex being a cofounder
+    \item k-fold cross validation, fold size, using stratified folds
+    \item coarse-to-fine cross-validation strategy
+    \item choice of scoring metric (f1-macro)
+\end{itemize}
+
+\subsection*{Comparisons to other models in validation cohort}
+\begin{itemize}
+    \item obviously ROC curves, etc.
+    \item how many features selected during training
+    \item
+\end{itemize}
+
+\subsection*{Limitations of my model vs other models}
+\begin{itemize}
+    \item trained only on males
+    \item much smaller dataset size \((n)\)
+    \item comparison of distributions of sex, age, etc in training cohorts (potential confounders)
+\end{itemize}
+
+\section{Footnotes}
+
+\subsection{Acknowledgements}
+
+\subsection{Ethics Statement}
+All participants gave written informed consent, and the study was approved by the national ethics committee. Data was anonymised and only age, biological sex and self-reported smoking values were extracted for comparison with matching whole blood DNA methylation values.
 
 \addcontentsline{toc}{section}{References}
 \printbibliography
