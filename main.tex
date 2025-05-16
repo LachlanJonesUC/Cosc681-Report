@@ -242,15 +242,20 @@ Implementation of multi-class Elastic Net logistic regression is provided by sci
               \item all males
               \item mean age 72
               \item 235 never smokers, 599 ex smokers, 109 current smokers
-              \begin{itemize}
-                \item 
-              \end{itemize}
               \item 90/10 train/test split
+              \begin{itemize}
+                \item 211 never smokers, 539 ex smokers, 98 current smokers in training split
+                \item 24 never smokers, 60 ex smokers, 11 current smokers in test split
+              \end{itemize}
+              \item \num{449521} CpG sites
           \end{itemize}
     \item Cohort 2: validation
           \begin{itemize}
               \item Illumina EPIC
-              \item
+              \item 67\% of individuals were male (n=658) (female n=326)
+              \item mean age 68
+              \item 403 never smokers, 476 ex smokers, 105 current smokers
+              \item \num{449521} CpG sites (intersection with 450k)
           \end{itemize}
 \end{itemize}
 
@@ -258,7 +263,7 @@ Implementation of multi-class Elastic Net logistic regression is provided by sci
 \begin{itemize}
     \item Apple M2
     \item Memory (and limitations)
-    \item Python version and package versions
+    \item Python version and package versions (sklearn, numpy, scipy)
 \end{itemize}
 
 \subsection{Pre-Processing}
@@ -271,6 +276,16 @@ Implementation of multi-class Elastic Net logistic regression is provided by sci
 \subsection{Training}
 \begin{itemize}
     \item Cross Validation
+    \begin{itemize}
+        \item 10 folds
+        \item stratified folds (same proportion of classes in each fold)
+        \item coarse to fine approach
+        \item f1-macro scoring (instead of neg log loss)
+    \end{itemize}
+    \item choice of optimiser/solver
+    \item choice of loss function
+    \item class weight balancing for gradient updates
+
 \end{itemize}
 
 \section{Results} \label{sec:results}
