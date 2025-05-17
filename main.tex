@@ -248,6 +248,7 @@ Implementation of multi-class Elastic Net logistic regression is provided by sci
                 \item 24 never smokers, 60 ex smokers, 11 current smokers in test split
               \end{itemize}
               \item \num{449521} CpG sites
+              \item white blood cells from whole blood
           \end{itemize}
     \item Cohort 2: validation
           \begin{itemize}
@@ -256,6 +257,7 @@ Implementation of multi-class Elastic Net logistic regression is provided by sci
               \item mean age 68
               \item 403 never smokers, 476 ex smokers, 105 current smokers
               \item \num{449521} CpG sites (intersection with 450k)
+              \item white blood cells from whole blood
           \end{itemize}
 \end{itemize}
 
@@ -263,7 +265,11 @@ Implementation of multi-class Elastic Net logistic regression is provided by sci
 \begin{itemize}
     \item Apple M2
     \item Memory (and limitations)
+    \begin{itemize}
+        \item relevant to aspects of training and preprocessing (see Kruskal-Wallis)
+    \end{itemize}
     \item Python version and package versions (sklearn, numpy, scipy)
+    \item bench mark training times and memory use
 \end{itemize}
 
 \subsection{Pre-Processing}
@@ -480,6 +486,23 @@ Implementation of multi-class Elastic Net logistic regression is provided by sci
 
 \subsubsection{Comparison with Prior Results}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{comparison_1v2_roc.png}
+    \caption{comparison 1v2}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{comparison_2v3_roc.png}
+    \caption{comparison 2v3}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{comparison_1v3_roc.png}
+    \caption{comparison 1v3}
+\end{figure}
 
 \subsection*{Choices made in development}
 \begin{itemize}
