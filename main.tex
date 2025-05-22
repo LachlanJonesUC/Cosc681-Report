@@ -253,6 +253,8 @@ Implementation of multi-class Elastic Net logistic regression is provided by sci
 \subsection{Datasets}
 This work uses two datasets, a discovery cohort and a valdiation cohort. \textbf{(Note for editor: I want to make a comment at some point for the computer scientists reading this on why we have two cohorts [instead of combining them like we would in CS]. Should I do it here, or in the discussion/results?)}
 
+Put it in discussion, but reference that section here. 
+
 \subsubsection{Cohort 1: Discovery}
 Cohort 1 contains DNA methylation data for 943 individuals. Across these individuals, 100\% are male, and there is a mean age of 72 years. Data was collected using the Illumina 450k array, which measured the methylation of \num{449521} CpG sites using the white blood cells found in whole blood samples. To ensure model compatability with independent datasets, available CpG sites were restricted to those found on both Illumina 450k and EPIC. This reduced available CpG sites by \(\sim\!90\%\). Note that this practice is consistent with previous work \textbf{(Note for editor: should I referrence the section I've written or the original paper here?)} (see \ref{sec:dnampackyrs}/DNAmPACKYRS \cite{lu2019dna} \ref{sec:mcigarette}/mCigarette \cite{chybowska2025blood}). Alongside epigenetic data, age, sex, self-reported pack-years and self-reported smoking-status were also recorded. Of the 943 individuals, 235 are never smokers, 599 are ex-smokers and 109 are current smokers. 90\% of this cohort was used as the model's training dataset, while the remaining 10\% was reserved as a test set to evaluate model performance. This was done in a stratified manner, which preserved the class balance from the original cohort.
 
