@@ -97,7 +97,7 @@ Self-reported smoking data has several limitations. Relying on individuals recou
 To this end, developing diagnostic tests to collect smoking data that do not share the biases of self-reported methods are of interest for improving the monitoring of health. One such approach is the use of epigenetic biomarkers.
 
 \subsection{Epigenetics}
-Epi- is a Greek prefix meaning upon or on. Therefore, epigenetics is the study of factors on top of or upon genetics. Specifically, it is the study of how environmental factors and behaviours affect, modify and regulate your genetics and their expression. We consider one type of epigenetic modification: DNA methylation.
+Epi- is a Greek prefix meaning upon or on. Therefore, epigenetics is the study of factors on top of or upon genetics. Specifically, it is the study of how environmental factors and behaviours affect, modify and regulate your genetics and their expression, without changing the DNA itself. We consider one type of epigenetic modification: DNA methylation.
 
 \begin{figure}
     \centering
@@ -106,9 +106,15 @@ Epi- is a Greek prefix meaning upon or on. Therefore, epigenetics is the study o
 \end{figure}
 
 \subsubsection{DNA Methylation}
-At a high level, DNA is a sequence of letters that provide genetic instructions. Like a human reading a book, strings of these letters are converted into information that tells cells how to function. More precisely, these letters are one of four nucleotide bases: adenine (A), cytosine (C), guanine (G) and thymine (T). To form the sequence, these bases are attached to a deoxyribose sugar and connected by a phosphate molecule, called the sugar-phosphate backbone. Of relevance is the phosphate molecule, specifically for when a cytosine is directly followed by a guanine in the sequence. A phosphate bonding a cytosine and a guanine (called a CpG site) creates a chemical structure which allows methyl groups to attach. This process is an epigenetic modification called DNA methylation (DNAm). As a biomarker, we measure methylation at a CpG site as a float between 0 and 1, measuring the percentage of methylation at that site.
+DNA is a sequence of one of four nucleotide bases: adenine (A), cytosine (C), guanine (G) and thymine (T), linked together by a deoxyribose sugar and phosphate backbone. It is this sequence that provides genetic instructions. Like a human reading a book, strings of these bases are converted into information that tells cells how to function, called DNA transcription. Continuing the book analogy, a sentence of such instructions is called a gene, found in a chapter called a chromosome. 
 
-While the genetic sequence of DNA is stable, methylation is not. It is a dynamic state that depends on factors such has behaviours and environmental exposure \textbf{(add citation?)}. Exposure to such factors increases methylation of CpG sites, while sufficent lack of exposure causes methylation to decrease over time \textbf{(add citation?)}. As previously mentioned, DNA methylation affects the expression of genes. Methylation at a CpG site can silence the expression of the gene that site is located in \textbf{(add citation?)}, where more methylation at a site leads to stronger silencing. Moreover, DNA methylation is not random. There is strong correlation between methylation of specific sites with specific factors \textbf{(add citation?)}. This means that DNA methylation of CpG sites can be used as a biomarker indicative of the factors that caused it, while also describing changes in cellular function. Therefore, DNA methylation is a biomarker not only useful for reporting on environmental exposures, but also predicting future health outcomes or risks. Examples of this include prediction of cardiovascular diseases \cite{cameron2023dna}, neurological diseases \cite{cells11213439}, type 2 diabetes \cite{cheng2023development}, pace of aging \cite{10.7554/eLife.73420}, and cancer \cite{luo2020circulating}. Furthermore, DNA methylation is not self-reported, and therefore overcomes the biases associated with self-reported data.
+DNA methylation involves the addition of a methyl group (CH\(_3\)) to the 5-carbon position of cytosine nucleotides. This cytosine modification makes it harder for transcription to occur, which can modulate, or even completely silence, gene expression. This is relevant when a guanine is directly followed by a cytosine in the DNA sequence. Because of the phosphate connecting these bases, such a region is called a CpG site. CpG sites are the main form of DNA methylation that occurs in mammalian cells. 
+
+A biological sample used to assess DNA methylation will contain many thousands of copies of DNA. When measuring a CpG site for DNA methylation, the reported value is the percentage of DNA copies from the sample which are methylated. That is, a value between 0 (all DNA copies un-methylated) and 1 (all DNA copies methylated).
+
+% At a high level, DNA is a sequence of letters that provide genetic instructions. Like a human reading a book, strings of these letters are converted into information that tells cells how to function. More precisely, these letters are one of four nucleotide bases: adenine (A), cytosine (C), guanine (G) and thymine (T). To form the sequence, these bases are attached to a deoxyribose sugar and connected by a phosphate molecule, called the sugar-phosphate backbone. Of relevance is the phosphate molecule, specifically for when a cytosine is directly followed by a guanine in the sequence. A phosphate bonding a cytosine and a guanine (called a CpG site) creates a chemical structure which allows methyl groups to attach. This process is an epigenetic modification called DNA methylation (DNAm). As a biomarker, we measure methylation at a CpG site as a float between 0 and 1, measuring the percentage of methylation at that site.
+
+While the genetic sequence of DNA is stable, methylation is not. It is a dynamic state that depends on factors such as behaviours and environmental exposure \cite{greenberg2019diverse}. Exposure to a wide range of environmental factors including air pollutants \cite{martin2018environmental}, diet \cite{ma2020whole}, physical activity and even psychosocial stress \cite{opsasnick2024epigenome} have been shown to be associated with specific changes in DNA methylation. Additionally, sufficent lack of exposure to such factors can reverse such changes. As previously mentioned, DNA methylation affects the expression of genes. Methylation at a CpG site can silence the expression of the gene that site is located in, where more methylation at a site leads to stronger silencing. Moreover, DNA methylation is not random. There is strong correlation between methylation of specific sites with specific factors \cite{ewasatlas}. With these two points in mind, this means that DNA methylation of CpG sites can be used as a biomarker indicative of the factors that caused it, while also describing changes in cellular function. Therefore, DNA methylation is a biomarker not only useful for reporting on environmental exposures, but also predicting future health outcomes or risks. Examples of this include prediction of cardiovascular diseases \cite{cameron2023dna}, neurological diseases \cite{cells11213439}, type 2 diabetes \cite{cheng2023development}, pace of aging \cite{10.7554/eLife.73420}, and cancer \cite{luo2020circulating}. Furthermore, DNA methylation is not self-reported, and therefore overcomes the biases associated with self-reported data.
 
 Altogether, this motivates the use of DNA methylation data to develop methods for collecting smoking history of indiviudals. Work using such data is referred to as an epigenome-wide association study (EWAS).
 
@@ -178,7 +184,7 @@ Given \(n\) examples, \(p\) features with inputs \(x \in \mathbb{R}^{n \times (p
 \[\hat{y} = x \beta \in \mathbb{R}^{p + 1}\]
 and minimises the function:
 \[\mathcal{L}(y, \hat{y}, \beta) = ||y - \hat{y}||_2^2 + \alpha\lambda||\beta||_1 + \alpha\frac{1 - \lambda}{2}||\beta||_2^2\]
-where:
+where
 \[||\beta||_1 = \sum_{i=1}^{p} |\beta_i|\]
 and:
 \[||\beta||_2 = \sqrt{\sum_{i=1}^{p} \beta_i^2}\]
@@ -251,12 +257,10 @@ Colloquially, this model can be thought of as training \(K\) indiviudal logistic
 Implementation of multi-class Elastic Net logistic regression is provided by scikit-learn \cite{scikit-learn}, via the \verb|linear_model.LogisticRegression| class.
 
 \subsection{Datasets}
-This work uses two datasets, a discovery cohort and a valdiation cohort. \textbf{(Note for editor: I want to make a comment at some point for the computer scientists reading this on why we have two cohorts [instead of combining them like we would in CS]. Should I do it here, or in the discussion/results?)}
-
-Put it in discussion, but reference that section here. 
+This work uses two datasets, a discovery cohort and a valdiation cohort.
 
 \subsubsection{Cohort 1: Discovery}
-Cohort 1 contains DNA methylation data for 943 individuals. Across these individuals, 100\% are male, and there is a mean age of 72 years. Data was collected using the Illumina 450k array, which measured the methylation of \num{449521} CpG sites using the white blood cells found in whole blood samples. To ensure model compatability with independent datasets, available CpG sites were restricted to those found on both Illumina 450k and EPIC. This reduced available CpG sites by \(\sim\!90\%\). Note that this practice is consistent with previous work \textbf{(Note for editor: should I referrence the section I've written or the original paper here?)} (see \ref{sec:dnampackyrs}/DNAmPACKYRS \cite{lu2019dna} \ref{sec:mcigarette}/mCigarette \cite{chybowska2025blood}). Alongside epigenetic data, age, sex, self-reported pack-years and self-reported smoking-status were also recorded. Of the 943 individuals, 235 are never smokers, 599 are ex-smokers and 109 are current smokers. 90\% of this cohort was used as the model's training dataset, while the remaining 10\% was reserved as a test set to evaluate model performance. This was done in a stratified manner, which preserved the class balance from the original cohort.
+Cohort 1 contains DNA methylation data for 943 individuals. Across these individuals, 100\% are male, and there is a mean age of 72 years. Data was collected using the Illumina 450k array, which measured the methylation of \num{449521} CpG sites using the white blood cells found in whole blood samples. To ensure model compatability with independent datasets, available CpG sites were restricted to those found on both Illumina 450k and EPIC. This reduced available CpG sites by \(\sim\!90\%\). Note that this practice is consistent with methods seen in previous work (see \ref{sec:dnampackyrs} and \ref{sec:mcigarette}). Alongside epigenetic data, age, sex, self-reported pack-years and self-reported smoking-status were also recorded. Of the 943 individuals, 235 are never smokers, 599 are ex-smokers and 109 are current smokers. 90\% of this cohort was used as the model's training dataset, while the remaining 10\% was reserved as a test set to evaluate model performance. This was done in a stratified manner, which preserved the class balance from the original cohort.
 
 % \begin{itemize}
 %     \item[\checkmark] Illumina 450k
@@ -371,13 +375,21 @@ Cohort 2 contains DNA methylation data for 984 individuals. Across these individ
 \begin{itemize}
     \item Limiting both datasets to the intersection of 450k and EPIC
     \item Formatting to csv/transposing for ML
+    \item 
+    \item came in format for EWAS, not machine learning
+    \item alignment of headers
+    \item structure wrong to read off a full set of features for a given individual
+    \item required transposing, memory heavy operation 
+    \item 
 \end{itemize}
+
+% Both datasets required preparation before training. Raw Illumina array text files came in a format suitable for an EWAS, but not machine learning 
 
 \subsubsection{Feature Selection} \label{sec:feature-selection}
 \begin{itemize}
     \item Kruskal-Wallis feature selection \cite{Kruskal1952UseOR}
           \begin{itemize}
-              \item "differentially methylated"
+              \item identifying "differentially methylated" cpg sites 
           \end{itemize}
 \end{itemize}
 
@@ -609,10 +621,13 @@ Cohort 2 contains DNA methylation data for 984 individuals. Across these individ
     \end{subfigure}
 \end{figure}
 
+\section{Discussion}
+
 \subsection*{Choices made in development}
 \begin{itemize}
     \item class weight balancing
     \item feature pruning for cohorts, ensuring compatability
+    \item train/test set choices in computer science vs biomedical science
     \item direction of discovery/validation cohorts, sex being a cofounder
     \item k-fold cross validation, fold size, using stratified folds
     \item coarse-to-fine cross-validation strategy
