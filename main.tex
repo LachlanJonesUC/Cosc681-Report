@@ -413,19 +413,58 @@ Cross-validation and grid search were used to select model hyperparameters. In p
 
 \section{Results} \label{sec:results}
 \begin{enumerate}
-    \item Kruskal-Wallis: \(\sim\)480k sites \(\rightarrow\) 3122 sites
-    \item Training: 3122 sites \(\rightarrow\) \(\rightarrow\) 2381 sites
+    \item Identifying differentially methylated CpG sites assoicated with self-reported smoking status: \(\sim\)480k sites \(\rightarrow\) 3122 sites
+    \begin{itemize}
+        \item 485,577 sites common to both cohorts 
+        \item as stated above, kruskal-wallis used to identify sites that were different between all 3 groups
+        \item identified 3122 with q-value\(< 0.05\)
+        \item top 100 CpG sites from this in appendix table 
+    \end{itemize}
+    \item Training: 3122 sites \(\rightarrow\) 2381 sites
+    \begin{itemize}
+        \item 3122 sites used from training
+        \item (The Elastic Net trained) model automatically selected 2381 different sites to be used to predict smoking status
+        \item 2381 was broken into 3 sets of CpGs and associated coefficients that each predicted logits for never, ex- and current smokers, respectively
+        \begin{itemize}
+            \item intersections of these sets is shown in figure (venn diagram)
+        \end{itemize}
+    \end{itemize}
     \item Performance on Cohort 1 test set
-    \item Comparison to existing models
+    \begin{itemize}
+        \item Confusion matrices
+        \item ROC diagrams
+        \item Have tabulated data with ROC diagrams
+        \item Boxplots
+    \end{itemize}
+    \item Performance on Cohort 2 set
+    \begin{itemize}
+        \item As above
+        \item At a minimum, tabulated comparison. (Look into ROC comparison)
+    \end{itemize}
+    \item Benchmark performance of externally derived gold standard models (DNAmPACKYRS and mCigarette) in both cohorts
+    \begin{itemize}
+        \item Benchmarking scores against self-reported smoking status
+        \item ROC diagrams
+        \item quick evaluation if predictive performance is comparable in both cohorts used in this study
+    \end{itemize} 
+    \item Comparison of my model with externally derived gold standard models (DNAmPACKYRS and mCigarette)
     \begin{enumerate}
         \item comparisons of sites used in all 3 models
+        \begin{itemize}
+            \item Venn diagrams
+            \item Tables
+            \item Not much overlap between any of the 3 models, despite all 3 using the same substrate (feature space)
+        \end{itemize}
         \item comparisons ROC performance
+        \begin{itemize}
+            \item ROC diagrams, pairwise between classes (ex vs current, current vs never, ex vs never)
+        \end{itemize}
     \end{enumerate}
 \end{enumerate}
 
 \subsection{Cohort 1: Training Results and Model Performance} \label{sec:cohort1-performance}
 
-\subsection{Cohort 2: External Validation Cohort} \label{sec:val-cohort}
+\subsection{Cohort 2: Independent Validation Cohort} \label{sec:val-cohort}
 
 \subsubsection{Model Performance} \label{sec:cohort2-performance}
 
@@ -466,6 +505,8 @@ Cross-validation and grid search were used to select model hyperparameters. In p
               \item this is likely just a limitation of the dataset and the number of participants
           \end{itemize}
 \end{itemize}
+
+\subsection*{Future Directions}
 
 \section{Footnotes}
 
