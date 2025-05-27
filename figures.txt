@@ -1,0 +1,204 @@
+\begin{itemize}
+    \item Confusion Matrices:
+          \begin{itemize}
+              \item Good accuracy/tpr across all three classes
+          \end{itemize}
+    \item
+\end{itemize}
+
+\begin{figure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_cm.png}
+        \caption{CM}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_cm_n.png}
+        \caption{CM Normalised}
+    \end{subfigure}
+    \caption{Confusion Matrices (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_1v3_roc.png}
+        \caption{Seperation of never vs current smokers by current smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_3v1_roc.png}
+        \caption{Seperation of never vs current smokers by never smoker sub-classifier}
+    \end{subfigure}
+    \caption{Never smoker vs current smoker sub-classifiers performance (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_1v2_roc.png}
+        \caption{Seperation of never vs ex-smokers by ex-smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_2v1_roc.png}
+        \caption{Seperation of never vs ex-smokers by never smoker sub-classifier}
+    \end{subfigure}
+    \caption{Never smoker vs ex-smoker sub-classifiers performance (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_2v3_roc.png}
+        \caption{Seperation of ex vs current smokers by current smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_3v2_roc.png}
+        \caption{Seperation of ex vs current smokers by ex-smoker sub-classifier}
+    \end{subfigure}
+    \caption{Ex-smoker vs current smoker sub-classifiers performance (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{cohort1_macro_ovo_roc.png}
+    \caption{Class seperation of classifier (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_1_boxplot.png}
+        \caption{Never smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_2_boxplot.png}
+        \caption{Ex-smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \par\vspace{0.5em}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_3_boxplot.png}
+        \caption{Current smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \caption{Boxplots of probability distributions (Cohort 1)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_cm.png}
+        \caption{CM}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_cm_n.png}
+        \caption{CM Normalised}
+    \end{subfigure}
+    \caption{Confusion Matrices (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_1v3_roc.png}
+        \caption{Seperation of never vs current smokers by current smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_3v1_roc.png}
+        \caption{Seperation of never vs current smokers by never smoker sub-classifier}
+    \end{subfigure}
+    \caption{Never smoker vs current smoker sub-classifiers performance (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_1v2_roc.png}
+        \caption{Seperation of never vs ex-smokers by ex-smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_2v1_roc.png}
+        \caption{Seperation of never vs ex-smokers by never smoker sub-classifier}
+    \end{subfigure}
+    \caption{Never smoker vs ex-smoker sub-classifiers performance (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_2v3_roc.png}
+        \caption{Seperation of ex vs current smokers by current smoker sub-classifier}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_3v2_roc.png}
+        \caption{Seperation of ex vs current smokers by ex-smoker sub-classifier}
+    \end{subfigure}
+    \caption{Ex-smoker vs current smoker sub-classifiers performance (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{cohort2_macro_ovo_roc.png}
+    \caption{Class seperation of classifier (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_1_boxplot.png}
+        \caption{Never smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_2_boxplot.png}
+        \caption{Ex-smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \par\vspace{0.5em}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort2_3_boxplot.png}
+        \caption{Current smoker sub-classifier probabilities across all three classes}
+    \end{subfigure}
+    \caption{Boxplots of probability distributions (Cohort 2)}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{comparison_1v2_roc.png}
+        \caption{comparison 1v2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{comparison_2v3_roc.png}
+        \caption{comparison 2v3}
+    \end{subfigure}
+    \par\vspace{0.5em}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{comparison_1v3_roc.png}
+        \caption{comparison 1v3}
+    \end{subfigure}
+\end{figure}
