@@ -28,6 +28,7 @@
 *.bbl
 *.bbl-SAVE-ERROR
 *.bcf
+*.bcf-SAVE-ERROR
 *.blg
 *-blx.aux
 *-blx.bib
@@ -51,6 +52,7 @@ latex.out/
 # algorithms
 *.alg
 *.loa
+*.equ
 
 # achemso
 acs-*.bib

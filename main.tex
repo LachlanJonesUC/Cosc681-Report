@@ -4,7 +4,8 @@
 % \usepackage{parskip}
 \usepackage[backend=biber, sorting=none]{biblatex}
 \usepackage{graphicx}
-\usepackage{svg}
+\usepackage{float}
+\usepackage{tocloft}
 \usepackage{chemfig}
 \usepackage{nameref}
 \usepackage{hyperref}
@@ -28,6 +29,16 @@
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\softmax}{softmax}
 
+\newlistof{equations}{equ}{\normalfont\Large\bfseries List of Equations}
+\newcommand{\equationname}[1]{%
+    \begingroup
+        \leavevmode
+        \addcontentsline{equ}{equations}{\protect\numberline{\theequation}#1}%
+    \endgroup   
+}
+\setlength{\cftequationsnumwidth}{2.5em}
+\setlength{\cftequationsindent}{1.5em}
+
 \begin{document}
 \doublespacing
 
@@ -39,6 +50,11 @@
 %     \end{subfigure}
 %     \caption{}
 % \end{figure}
+
+% \textbf{Discussion points for this section:}
+% \begin{itemize}
+%     \item 
+% \end{itemize}
 
 \begin{titlepage}
     \centering
@@ -79,17 +95,17 @@
 \tableofcontents
 
 \listoffigures
-
+\listofequations
 \listoftables
 
 \newpage
 \pagenumbering{arabic}
 
 \section{Introduction}
-\subsection{Tobacco Related Health Issues}
+\subsection{Tobacco-related health issues}
 The harms associated with tobacco use are well recognised. Tobacco kills up to half its users who do not quit and more than 8 million people per year, including an estimated 1.3 million non-smokers due to second hand smoke \cite{who_tobacco}. Smoking causes cancer, heart and lung disease, stroke, type 2 diabetes, and harmful reproductive effects \cite{hhs_smoking_2014}. There is a growing body of evidence suggesting a causal relationship between smoking and mental health issues \cite{taylor2019smoking}. Clearly, such negative impacts on patient health due to tobacco use are undesirable, just as they are avoidable. For these reason, tobacco usage is of great concern to health professionals. The World Health Organization asserts that surveillance is key for addressing the tobacco epidemic, as tracking tobacco usage indicates how to shape policy \cite{who_tobacco}.
 
-\subsection{Self-Reported Smoking Status}
+\subsection{Self-reported smoking status}
 Current surveillance relies on self-reported smoking data. That is, a patient's smoking history is recorded by them personally recalling and reporting. It is a convenient and cost-effective way of collecting smoking statistics. There are two main types of smoking data used to measure tobacco exposure: smoking status and smoking pack-years. Smoking status is label based on the history and habits of tobacco use. Indiviudals are binned into never smokers, ex-smokers and current smokers. Smoking pack-years is a calculated score that tries to quantify tobacco use. It is calculated as the number of packs of cigarettes smoked per day multiplied by years of smoking \cite{smokingpackyears}. For example, one pack-year is one pack per day for one year, or half a pack per day for two years. Therefore, smoking pack-years quantifies both the degree of exposure and duration of exposure equally.
 
 Self-reported smoking data has several limitations. Relying on individuals recounting information can introduce bias. Self-reported smoking data is prone to inaccuracy due to stigma, recall bias and a lack of information on second-hand exposure \cite{park2015correlation, gorber2009accuracy}. That is, the social pressure to deny partaking in stigmatised behaviours, forgetting details and information, and not being aware of sources of second-hand exposure can all influence the results of self-reported smoking data. A method of using objective evidence to determine smoking history could overcome these issues. On the other hand, the inaccuracy of self-reported smoking data can differ between population groups. For example, studies suggest that teens are more likely to provide false responses in smoking surveys \cite{park2015correlation}. Moreover, tobacco consumption differs between social groups, with smoking more prevalent in low-education and low-socio-economic groups \cite{cdc2019_smoking}.
@@ -105,7 +121,7 @@ Epi- is a Greek prefix meaning upon or on. Therefore, epigenetics is the study o
     \caption*{Chemical structure of DNA \cite{ball_DNA_structure}}
 \end{figure}
 
-\subsubsection{DNA Methylation}
+\subsubsection{DNA methylation}
 DNA is a sequence of one of four nucleotide bases: adenine (A), cytosine (C), guanine (G) and thymine (T), linked together by a deoxyribose sugar and phosphate backbone. It is this sequence that provides genetic instructions. Like a human reading a book, strings of these bases are converted into information that tells cells how to function, called DNA transcription. Continuing the book analogy, a sentence of such instructions is called a gene, found in a chapter called a chromosome.
 
 DNA methylation involves the addition of a methyl group (CH\(_3\)) to the 5-carbon position of cytosine nucleotides. This cytosine modification makes it harder for transcription to occur, which can modulate, or even completely silence, gene expression. This is relevant when a guanine is directly followed by a cytosine in the DNA sequence. Because of the phosphate connecting these bases, such a region is called a CpG site. CpG sites are the main form of DNA methylation that occurs in mammalian cells.
@@ -114,7 +130,8 @@ A biological sample used to assess DNA methylation will contain many thousands o
 
 % At a high level, DNA is a sequence of letters that provide genetic instructions. Like a human reading a book, strings of these letters are converted into information that tells cells how to function. More precisely, these letters are one of four nucleotide bases: adenine (A), cytosine (C), guanine (G) and thymine (T). To form the sequence, these bases are attached to a deoxyribose sugar and connected by a phosphate molecule, called the sugar-phosphate backbone. Of relevance is the phosphate molecule, specifically for when a cytosine is directly followed by a guanine in the sequence. A phosphate bonding a cytosine and a guanine (called a CpG site) creates a chemical structure which allows methyl groups to attach. This process is an epigenetic modification called DNA methylation (DNAm). As a biomarker, we measure methylation at a CpG site as a float between 0 and 1, measuring the percentage of methylation at that site.
 
-While the genetic sequence of DNA is stable, methylation is not. It is a dynamic state that depends on factors such as behaviours and environmental exposure \cite{greenberg2019diverse}. Exposure to a wide range of environmental factors including air pollutants \cite{martin2018environmental}, diet \cite{ma2020whole}, physical activity and even psychosocial stress \cite{opsasnick2024epigenome} have been shown to be associated with specific changes in DNA methylation. Additionally, sufficent lack of exposure to such factors can reverse such changes. As previously mentioned, DNA methylation affects the expression of genes. Methylation at a CpG site can silence the expression of the gene that site is located in, where more methylation at a site leads to stronger silencing. Moreover, DNA methylation is not random. There is strong correlation between methylation of specific sites with specific factors \cite{ewasatlas}. With these two points in mind, this means that DNA methylation of CpG sites can be used as a biomarker indicative of the factors that caused it, while also describing changes in cellular function. Therefore, DNA methylation is a biomarker not only useful for reporting on environmental exposures, but also predicting future health outcomes or risks. Examples of this include prediction of cardiovascular diseases \cite{cameron2023dna}, neurological diseases \cite{cells11213439}, type 2 diabetes \cite{cheng2023development}, pace of aging \cite{10.7554/eLife.73420}, and cancer \cite{luo2020circulating}. Furthermore, DNA methylation is not self-reported, and therefore overcomes the biases associated with self-reported data.
+While the genetic sequence of DNA is stable, methylation is not. It is a dynamic state that depends on factors such as behaviours and environmental exposure \cite{greenberg2019diverse}. Exposure to a wide range of environmental factors including air pollutants \cite{martin2018environmental}, diet \cite{ma2020whole}, physical activity and even psychosocial stress \cite{opsasnick2024epigenome} have been shown to be associated with specific changes in DNA methylation. Additionally, sufficent lack of exposure to such factors can reverse such changes. As previously mentioned, DNA methylation affects the expression of genes. Methylation at a CpG site can silence the expression of the gene that site is located in, where more methylation at a site leads to stronger silencing. Moreover, DNA methylation is not random. There is strong correlation between methylation of specific sites with specific factors \cite{ewasatlas}. In the context of this work, smoking is strongly associated the methylation of cg05575921, found in the Aryl Hydrocarbon Receptor
+Repressor (AHRR) gene \cite{reynolds2015dna}. With these points in mind, this means that DNA methylation of CpG sites can be used as a biomarker indicative of the factors that caused it, while also describing changes in cellular function. Therefore, DNA methylation is a biomarker not only useful for reporting on environmental exposures, but also predicting future health outcomes or risks. Examples of this include prediction of cardiovascular diseases \cite{cameron2023dna}, neurological diseases \cite{cells11213439}, type 2 diabetes \cite{cheng2023development}, pace of aging \cite{10.7554/eLife.73420}, and cancer \cite{luo2020circulating}. Furthermore, DNA methylation is not self-reported, and therefore overcomes the biases associated with self-reported data.
 
 Altogether, this motivates the use of DNA methylation data to develop methods for collecting smoking history of indiviudals. Work using such data is referred to as an epigenome-wide association study (EWAS).
 
@@ -136,7 +153,7 @@ Altogether, this motivates the use of DNA methylation data to develop methods fo
     \caption*{Modification of Cytosine into 5-Methylcytosine caused by DNA methylation}
 \end{figure}
 
-\subsubsection{DNAm Platforms}
+\subsubsection{DNAm platforms}
 The human genome contains \(\sim\!28\) million CpG sites. This is often a computationally infeasible domain for a dataset, due to massive dataset sizes, processing requirements, and noise contained in the signal. Instead, most EWAS use a biologically relevant and informative subset of CpG sites. There are two commonly chosen platforms used to achieve this: Illumina 450k \cite{illumina2012methylation450} and Illumina EPIC \cite{illumina2015methylationepic}. 450k was the first array developed by Illumina, consisting of \num{485577} CpG sites chosen for their quality and usefulness. The EPIC array was developed as a successor, increasing to \num{865859} CpG sites. However, only around \(>90\%\) of the sites were retained from 450k. This is something that needs to be considered when developing scores or screening tests from an EWAS if compatability with multiple datasets or cohorts is of concern (see \ref{sec:pre-processing}).
 
 Additionally, these arrays are compatible with DNA from multiple different cell types. Some examples include whole blood, purified cells and fresh-frozen tissue \cite{bhat2022data}. Moreover, the methylation signal can differ across different cell types \cite{huang2016epigenome}, which means selection of cell type can be an import factor when designing an EWAS. Typically, whole blood is used, specifically white blood cells, as red blood cells in humans do not carry a copy of the DNA.
@@ -162,7 +179,7 @@ Additionally, these arrays are compatible with DNA from multiple different cell 
 %     \item Cell type of sample matters, different cells with have different methylation. Typically whole blood is used, good general methylation signal.
 % \end{itemize}
 
-\subsection{Machine Learning in Epigenetics}
+\subsection{Machine learning in epigenetics}
 Broadly, machine learning algorithms are split into one of two tasks: regression or classification. The most significant distinction between these two tasks is the choice of supervised learning labels. Regression algorithms are trained against continuous, numeric scores, while classification algorithms are trained against discrete class labels. The choice of label in turn determines the output produced by the algorithm.
 Machine learning has already seen use in many areas of clinical epigenetics. We begin with a review of some developed methods, addressing both classification and regression tasks.
 
@@ -175,15 +192,17 @@ Machine learning has already seen use in many areas of clinical epigenetics. We 
     \item Dogan et al. \cite{dogan2018integrated} proposed a method for integrated genetic and epigenetic classification of coronary heart disease. The training dataset consisted of 1,545 indiviudals. An approach combining undersampling and ensemble learning \cite{liu2008exploratory} was used to address class imbalance, creating 8 training sub-datasets. Point biserial correlation and Pearson correlation were used for feature selection, resulting in 107,799 CpG sites for training. These features were ranked using ROC AUC. Random Forest classifiers were then trained on the 8 training sub-datasets, with majority voting used for ensembling. Hyperparameters were tuned using 10-fold cross-validation. The final model used 4 CpG cites, two genetic variables, age and sex. This achieved an accuracy, sensitivity and specificity of 78\%, 0.75 and 0.80, respectively.
 \end{enumerate}
 
-\subsection{Smoking Algorithms}
+\subsection{Smoking algorithms}
 In the context of smoking, the two most significant machine learning epigenetic scores use Elastic Net regression.
 
-\subsubsection{Elastic Net Regression}
+\subsubsection{Elastic Net regression}
 Elastic Net \cite{zou2005regularization} is a regularised form of linear regression that includes two additional penalty terms.
-Given \(n\) examples, \(p\) features with inputs \(x \in \mathbb{R}^{n \times (p + 1)}\) and corresponding ground-truth \(y \in \mathbb{R}^n\), we find coefficients \(\beta \in \mathbb{R}^{p + 1}\) that produces an output:
+Given \(n\) examples, \(p\) features with data \(x \in \mathbb{R}^{n \times (p + 1)}\) and corresponding ground-truth \(y \in \mathbb{R}^n\), we find coefficients \(\beta \in \mathbb{R}^{p + 1}\) that produces an output:
 \[\hat{y} = x \beta \in \mathbb{R}^{p + 1}\]
 and minimises the function:
-\[\mathcal{L}(y, \hat{y}, \beta) = ||y - \hat{y}||_2^2 + \alpha\lambda||\beta||_1 + \alpha\frac{1 - \lambda}{2}||\beta||_2^2\]
+\begin{equation} \equationname{Elastic Net linear regression}
+    \mathcal{L}(y, \hat{y}, \beta) = ||y - \hat{y}||_2^2 + \alpha\lambda||\beta||_1 + \alpha\frac{1 - \lambda}{2}||\beta||_2^2
+\end{equation}
 where
 \[||\beta||_1 = \sum_{i=1}^{p} |\beta_i|\]
 and:
@@ -197,7 +216,7 @@ Lu et al. \cite{lu2019dna} proposed DNAmPACKYRS as a DNA methylation based score
 As surrogate biomarker for lifespan, DNAmPACKYRS performs better than self-reported pack-years. Firstly, DNAmPACKYRS can be used to predict lifespan in never-smokers \cite{lu2019dna}, whereas self-reported pack-years cannot (all self-reported values would be 0). Additionally, DNAmPACKYRS is a more significant predictor of lifespan than self-reported pack-years. Across 4 out of 5 datasets DNAmPACKYRS had a smaller Cox regression p-values when compared to self-reported pack-years \cite{lu2019dna}.
 % \(8.10\mathrm{e}{-23}\) vs \(1.12\mathrm{e}{-11}\), \(8.51\mathrm{e}{-5}\) vs \(2.13\mathrm{e}{-3}\), \(7.17\mathrm{e}{-12}\) vs \(7.03\mathrm{e}{-12}\), \(2.1\mathrm{e}{-19}\) vs \(6.4\mathrm{e}{-19}\), and \(5.33\mathrm{e}{-4}\) vs \(1.78\mathrm{e}{-1}\), respectively. 
 
-There are some limitations with the DNAmPACKYRS score. Since DNAmPACKYRS is only evaluated as a surrogate biomarker in the GrimAge paper, there is no reporting on its performance of predicting smoking status. However, this can be done independently (see \ref{sec:val-cohort}). When performed, we can see that while DNAmPACKYRS achieves good predictive performance seperating never smokers from current smokers (ROC AUC = 0.991) and ex-smokers from current smokers (ROC AUC = 0.915), the score is not optimised for seperating never smokers from ex-smokers (ROC AUC = 0.798). Additionally, the choice of self-reported pack-years as a regression label introduces a source of inaccuracy, discussed below (see \ref{sec:mcigarette}: \nameref{sec:mcigarette}).
+There are some limitations with the DNAmPACKYRS score. Since DNAmPACKYRS is only evaluated as a surrogate biomarker in the GrimAge paper, there is no reporting on its performance of predicting smoking status. However, this can be done independently (see \ref{sec:prior-benchmarks}). When performed, we can see that while DNAmPACKYRS achieves good predictive performance seperating never smokers from current smokers (ROC AUC = 0.991) and ex-smokers from current smokers (ROC AUC = 0.915), the score is not optimised for seperating never smokers from ex-smokers (ROC AUC = 0.798). Additionally, the choice of self-reported pack-years as a regression label introduces a source of inaccuracy, discussed below (see \ref{sec:mcigarette}: \nameref{sec:mcigarette}).
 
 % Notes for DNAmPACKYRS/mCigarette:
 % \begin{itemize}
@@ -208,7 +227,7 @@ There are some limitations with the DNAmPACKYRS score. Since DNAmPACKYRS is only
 % \end{itemize}
 
 \subsubsection{mCigarette} \label{sec:mcigarette}
-Chybowska et al. \cite{chybowska2025blood} proposed mCigarette as a DNA methylation based score for calculating pack-years. This score was part of the very recent (2025) study comparing brain- and blood-based DNA methylation associated with smoking. This worked aimed to overcome the limitations of self-reported smoking data, as well as the modest performance of seperating never smokers from ex-smokers of previous studies. Several techniques were employed, including high resolution approaches involving \(\sim \! 20\) million CpG sites. The most relevant method is the developed smoking biomarker: mCigarette. Similar to DNAmPACKYRS, this is a methylation based score for smoking pack-years trained with Elastic Net Regression. Training data consisted of \num{17865} indiviudals from the Generation Scotland dataset \cite{smith2006generation}, which was developed on the Illumina EPIC array. Individuals from this dataset had a mean age of 47.6 years. 59.1\% of the individuals were female. CpG sites were filtered based on statisticcal association with tobacco use at a false discovery rate (FDR) \(< 0.05\), resulting in \num{18760} CpG sites per indiviudal. This filtering was ran in a dataset seperate to the training dataset, using the Illumina 450k array. Note that this limits training features those CpG sites found on both the 450k and EPIC arrays. Elastic Net regression was then used to train the mCigarette score. Hyperparameters were tuned using 10-fold cross-valdiation, which set \(\lambda = 0.012577\) and resulted in a model using \num{1255} CpG sites.
+Chybowska et al. \cite{chybowska2025blood} proposed mCigarette as a DNA methylation based score for calculating pack-years. This score was part of the very recent (2025) study comparing brain- and blood-based DNA methylation associated with smoking. This worked aimed to overcome the limitations of self-reported smoking data, as well as the modest performance of seperating never smokers from ex-smokers of previous studies. Several techniques were employed, including high resolution approaches involving \(\sim \! 20\) million CpG sites. The most relevant method is the developed smoking biomarker: mCigarette. Similar to DNAmPACKYRS, this is a methylation based score for smoking pack-years trained with Elastic Net Regression. Training data consisted of \num{17865} indiviudals from the Generation Scotland dataset \cite{smith2006generation}, which was developed on the Illumina EPIC array. Individuals from this dataset had a mean age of 47.6 years. 59.1\% of the individuals were female. CpG sites were filtered based on statistical association with tobacco use at a false discovery rate (FDR) \(< 0.05\), resulting in \num{18760} CpG sites per indiviudal. This filtering was ran in a dataset seperate to the training dataset, using the Illumina 450k array. Note that this limits training features those CpG sites found on both the 450k and EPIC arrays. Elastic Net regression was then used to train the mCigarette score. Hyperparameters were tuned using 10-fold cross-valdiation, which set \(\lambda = 0.012577\) and resulted in a model using \num{1255} CpG sites.
 
 As a result, mCigarette achieves incremental performance on previous scores. In an independent validation cohort, mCigarette achieves ROC AUCs of 0.98, 0.90 and 0.85 for current vs never, current vs ex- and never vs ex- smokers, respectively.
 
@@ -227,18 +246,18 @@ There are limitations associated with the mCigarette score. The choice of smokin
 %     \item limitation 2: choice of ground truth (sr pack-years) is potentially confusing for the model
 % \end{itemize}
 
-\subsection{Aim of This Work}
+\subsection{Aim of this work}
 
 As mentioned above, there are limitations associated with using smoking pack-years as a training label, largely due to not acounting for length of smoking cessation. This could be addressed by correcting smoking pack-year values for length of smoking cessation, however, both self-reported smoking pack-years and self-reported length of smoking cessation have concerns for bias associated with self-reported data. Instead, self-reported smoking status (current, ex- or never smoker) is deemed to be a more reliable and complete measure of smoking exposure.
 
-Therefore, we reframe modeling smoking history as a classification task rather than a regression task (\ref{sec:algorithm}). This changes aims to overcome the described limitations of using smoking pack-years as a training label to achieve better class seperation between never smokers and ex-smokers. We first use individuals' self-reported smoking status to identify differentially methylated CpG sites as a feature selection step in our training dataset (\ref{sec:feature-selection}). These sites are then used to train a multi-class logistic regression model (\ref{sec:training}), which is validated in a hold-out test dataset (\ref{sec:cohort1-performance}) and independent validation cohort (\ref{sec:cohort2-performance}). Additionally, the independent validation cohort is used to compare our model with the two existing gold standard models: DNAmPACKYRS and mCigarette (\ref{sec:model-comparison}).
+Therefore, we reframe modeling smoking history as a classification task rather than a regression task (\ref{sec:algorithm}). This changes aims to overcome the described limitations of using smoking pack-years as a training label to achieve better class seperation between never smokers and ex-smokers. We first use individuals' self-reported smoking status to identify differentially methylated CpG sites as a feature selection step in our training dataset (\ref{sec:feature-selection}). These sites are then used to train a multi-class logistic regression model (\ref{sec:training}), which is validated in a hold-out test dataset (\ref{sec:cohort1-performance}) and independent validation cohort (\ref{sec:cohort2-performance}). Additionally, the independent validation cohort is used to compare our model with the two existing gold standard models: DNAmPACKYRS and mCigarette (\ref{sec:model-comparisons}).
 
 \section{Method}
 
 \subsection{Algorithm} \label{sec:algorithm}
 We begin by transforming Elastic Net from a regression problem into a classification problem. In the binary classification case, this is a straightforward replacement of the mean-square error term in the loss function with a binary-cross entropy error term, alongside transforming the linear prediction into a probability via the sigmoid function. However, in the multiclass classification case the modification also affects the regularisation terms.
 
-Given \(n\) examples, \(p\) features, \(K\) classes with inputs \(x \in \mathbb{R}^{n \times (p + 1)}\) and corresponding ground-truth (as one-hot encoded vectors) \(y \in \mathbb{R}^{n \times K}\), we find coefficients \(\beta \in \mathbb{R}^{K \times (p + 1)}\) that produces logits:
+Given \(n\) examples, \(p\) features, \(K\) classes with data \(x \in \mathbb{R}^{n \times (p + 1)}\) and corresponding ground-truth (as one-hot encoded vectors) \(y \in \mathbb{R}^{n \times K}\), we find coefficients \(\beta \in \mathbb{R}^{K \times (p + 1)}\) that produces logits:
 \[z = x \beta^\mathsf{T} \in \mathbb{R}^{n \times K}\]
 We transform this into probabilities with the softmax function:
 \[\softmax(t_1,... , t_k) =
@@ -249,7 +268,9 @@ We transform this into probabilities with the softmax function:
     \end{bmatrix}
 \]
 The loss function then becomes:
-\[\mathcal{L}(y, z, \beta) = -\frac{1}{n}\sum_{i=1}^{n} y_i \cdot \log(\softmax(z_i)) + \alpha\sum_{k=1}^{K}(\lambda||\beta_k||_1 + (1 - \lambda)||\beta_k||_2^2)\]
+\begin{equation} \equationname{Elastic Net logistic regression}
+    \mathcal{L}(y, z, \beta) = -\frac{1}{n}\sum_{i=1}^{n} y_i \cdot \log(\softmax(z_i)) + \alpha\sum_{k=1}^{K}(\lambda||\beta_k||_1 + (1 - \lambda)||\beta_k||_2^2)
+\end{equation}
 where the \(L_1\)-norm and \(L_2\)-norm are as before.
 
 Colloquially, this model can be thought of as training \(K\) indiviudal logistic regression sub-classifiers, where each sub-classifier is tasked only with predicting one of the \(K\) classes. The softmax function ensures that for each example, the \(K\) predicted probabilities will all add to 1. Regularisation terms work as before, but are now per-sub-classifier.
@@ -288,113 +309,81 @@ Cohort 2 contains DNA methylation data for 984 individuals. Across these individ
 %     \item white blood cells from whole blood
 % \end{itemize}
 
-% \begin{table}
-%     \caption{Datasets Comparisons}
-%     \begin{tabularx}{\textwidth}{|X|l|r|r|r|}
-%         \hline
-%         \multicolumn{2}{|c|}{\textbf{Metric}}    & \textbf{Cohort 1 - Train} & \textbf{Cohort 1 - Test} & \textbf{Cohort 2}                     \\
-%         \hline
-%         \multicolumn{5}{|c|}{\textbf{Class Balance}}                                                                                            \\
-%         \hline
-%         \multicolumn{2}{|l|}{Num. Individuals}   & \num{848}                 & \num{95}                 & \num{984}                             \\
-%         \hline
-%         \multirow{2}{*}{Never Smokers}           & Count                     & \num{211}                & \num{24}          & \num{403}         \\
-%         \cline{2-5}
-%                                                  & Percent                   & \SI{25}{\percent}        & \SI{25}{\percent} & \SI{41}{\percent} \\
-%         \hline
-%         \multirow{2}{*}{Ex-Smokers}              & Count                     & \num{539}                & \num{60}          & \num{476}         \\
-%         \cline{2-5}
-%                                                  & Percent                   & \SI{63.5}{\percent}      & \SI{63}{\percent} & \SI{48}{\percent} \\
-%         \hline
-%         \multirow{2}{*}{Current Smokers}         & Count                     & \num{98}                 & \num{11}          & \num{105}         \\
-%         \cline{2-5}
-%                                                  & Percent                   & \SI{11.5}{\percent}      & \SI{12}{\percent} & \SI{11}{\percent} \\
-%         \hline
-%         \multicolumn{5}{|c|}{\textbf{Cohort Distribution}}                                                                                      \\
-%         \hline
-%         \multicolumn{2}{|l|}{Percent. Male}      & \SI{100}{\percent}        & \SI{100}{\percent}       & \SI{67}{\percent}                     \\
-%         \hline
-%         \multicolumn{2}{|l|}{Mean Age}           & \num{72}                  & \num{71.5}               & \num{68}                              \\
-%         \hline
-%         \multicolumn{5}{|c|}{\textbf{Num. CpG Sites}}                                                                                           \\
-%         \hline
-%         \multicolumn{2}{|l|}{Raw Illumina Array} & \num{485577}              & \num{485577}             & \num{865859}                          \\
-%         \hline
-%         \multicolumn{2}{|l|}{Post-intersection}  & \num{449521}              & \num{449521}             & \num{449521}                          \\
-%         \hline
-%         \multicolumn{2}{|l|}{Percent. Retained}  & \SI{93}{\percent}         & \SI{93}{\percent}        & \SI{52}{\percent}                     \\
-%         \hline
-%     \end{tabularx}
-% \end{table}
-
 \begin{table}
     \caption{Datasets Comparisons}
     \begin{tabularx}{\textwidth}{X >{\raggedleft\arraybackslash}X >{\raggedleft\arraybackslash}X >{\raggedleft\arraybackslash}X}
         \toprule
         \multicolumn{1}{c}{\textbf{Measure}} & \multicolumn{1}{c}{\textbf{Cohort 1 - Train}} & \multicolumn{1}{c}{\textbf{Cohort 1 - Test}} & \multicolumn{1}{c}{\textbf{Cohort 2}} \\
         \addlinespace
-        \multicolumn{4}{c}{\textbf{Class Balance}}                                                                                                                                 \\
+        \multicolumn{4}{c}{\textbf{Class Balance}}                                                                                                                                  \\
         \midrule
-        Num. Individuals                    & \num{848}                                     & \num{95}                                     & \num{984}                             \\
+        Num. Individuals                     & \num{848}                                     & \num{95}                                     & \num{984}                             \\
         \addlinespace
-        Never Smokers                       & \num{211} (\SI{25}{\percent})                 & \num{24} (\SI{25}{\percent})                 & \num{403} (\SI{41}{\percent})         \\
+        Never Smokers                        & \num{211} (\SI{25}{\percent})                 & \num{24} (\SI{25}{\percent})                 & \num{403} (\SI{41}{\percent})         \\
         \addlinespace
-        Ex-Smokers                          & \num{539} (\SI{63}{\percent})                 & \num{60} (\SI{63}{\percent})                 & \num{476} (\SI{48}{\percent})         \\
+        Ex-Smokers                           & \num{539} (\SI{63}{\percent})                 & \num{60} (\SI{63}{\percent})                 & \num{476} (\SI{48}{\percent})         \\
         \addlinespace
-        Current Smokers                     & \num{98} (\SI{12}{\percent})                  & \num{11} (\SI{12}{\percent})                 & \num{105} (\SI{11}{\percent})         \\
+        Current Smokers                      & \num{98} (\SI{12}{\percent})                  & \num{11} (\SI{12}{\percent})                 & \num{105} (\SI{11}{\percent})         \\
         \addlinespace
-        \multicolumn{4}{c}{\textbf{Cohort Distribution}}                                                                                                                           \\
+        \multicolumn{4}{c}{\textbf{Cohort Distribution}}                                                                                                                            \\
         \midrule
-        Percentage Male                     & \SI{100}{\percent}                            & \SI{100}{\percent}                           & \SI{67}{\percent}                     \\
-        Mean Age                            & \num{72}                                      & \num{71.5}                                   & \num{68}                              \\
+        Percentage Male                      & \SI{100}{\percent}                            & \SI{100}{\percent}                           & \SI{67}{\percent}                     \\
+        Mean Age                             & \num{72}                                      & \num{71.5}                                   & \num{68}                              \\
         \addlinespace
-        \multicolumn{4}{c}{\textbf{Num. CpG Sites}}                                                                                                                                \\
+        \multicolumn{4}{c}{\textbf{Num. CpG Sites}}                                                                                                                                 \\
         \midrule
-        Raw Illumina Array                  & \num{485577}                                  & \num{485577}                                 & \num{865859}                          \\
-        Post-intersection                   & \num{449521}                                  & \num{449521}                                 & \num{449521}                          \\
-        Percentage Retained                 & \SI{93}{\percent}                             & \SI{93}{\percent}                            & \SI{52}{\percent}                     \\
+        Raw Illumina Array                   & \num{485577}                                  & \num{485577}                                 & \num{865859}                          \\
+        Post-intersection                    & \num{449521}                                  & \num{449521}                                 & \num{449521}                          \\
+        Percentage Retained                  & \SI{93}{\percent}                             & \SI{93}{\percent}                            & \SI{52}{\percent}                     \\
         \bottomrule
     \end{tabularx}
 \end{table}
 
-\subsection{Hardware and Software}
+\vspace{1cm}
+\textbf{Discussion points for datasets:}
 \begin{itemize}
-    \item Apple M2
-    \item Memory (and limitations)
-          \begin{itemize}
-              \item relevant to aspects of training and preprocessing (see Kruskal-Wallis)
-          \end{itemize}
-    \item Python version and package versions (sklearn, numpy, scipy)
-    \item bench mark training times and memory use
+    \item perhaps move the point about dataset filtering being consistent to discussion? (considering it is mentioned again in pre-processing, i think this is a good change)
 \end{itemize}
 
-All pre-processing, training and the production of results was ran on an M2 MacBook Air. This device had an Apple M2 processor with 8 CPU cores and 8 GPU cores, 16GB of unified memory, and the macOS Sonoma version 14.2 operating system.
+\subsection{Hardware and software}
+Pre-processing, training and the production of results were ran on an M2 MacBook Air. This device had an Apple M2 processor with 8 CPU cores and 8 GPU cores, 16GB of unified memory, and the macOS Sonoma version 14.2 operating system. Code implementations were written in Python (version 3.9.10), using the scikit-learn (version 1.6.0), SciPy (version 1.13.1) and NumPy (version 1.26.4) packages.
 
-\subsection{Pre-Processing} \label{sec:pre-processing}
+\textbf{Discussion points for hardware and software:}
 \begin{itemize}
-    \item Limiting both datasets to the intersection of 450k and EPIC
-    \item Formatting to csv/transposing for ML
-    \item
-    \item came in format for EWAS, not machine learning
-    \item alignment of headers
+    \item Memory requirements, also noted as a discussion point for pre-processing
+\end{itemize}
+
+\subsection{Pre-processing} \label{sec:pre-processing}
+Both datasets required preparation before training. Raw Illumina array text files came in a format suitable for an EWAS, but not machine learning. Preparation steps included conversion in comma seperated value format, merging and formatiing of headers, transposing whole files, and splitting into seperate labels and data files.
+
+Additionally,  vailable CpG sites for training were filtered in two different ways. Firstly, as previously mentioned, both datasets (one from using a 450k array, the other using an EPIC array) were filtered to the intersection of CpG sites available on both of the 450k and EPIC arrays. Secondly, the Kruskal-Wallis test by ranks is used as a feature selection step.
+
+\subsubsection{Feature selection: Kruskal-Wallis test} \label{sec:feature-selection}
+The Kruskal-Wallis test by ranks \cite{Kruskal1952UseOR} is a non-parametric statistical test that identfies if there are statisitcally siginificant differences between the distributions of observations for two or more samples. In the context of this work, the test is ran per CpG site, where the samples are classes of smoking status (current, ex-, never smokers) and observations are DNA methylation values for that site. Applying this test to the training dataset identfies the CpG sites which are the most differentially methylated across all three classes.
+
+To run the test, first all observations are ranked (sorted in ascending order, with correction for ties). The test statistic is then given by:
+\begin{equation} \equationname{Kruskal-Wallis test by ranks}
+    H = \frac{12}{N(N + 1)}\sum_{i=1}^{C}\frac{R_i^2}{n_i} - 3(N + 1)
+\end{equation}
+where \(C\) is the number of samples, \(n_i\) is the number of observations in the \(i^\text{th}\) sample, \(N = \sum n_i\) is the number of observations in all samples, and \(R_i\) is the sum of the ranks in the \(i^\text{th}\) sample. The null-hypothesis is the distributions of all samples are the same. A large value of \(H\) is indicative of rejecting the null hypothesis. Moreover, approximating the distribution of the \(H\) statistic as a chi-sqaured distribution allows the calculation of \(p\)-values. To achieve feature selection, we retain all CpG sites with a \(p\text{-value} < 0.05\) after controlling for false discovery using Benjamini-Hochberg correction \cite{benjamini1995controlling}.
+
+Implementations of the Kruskal-Wallis test and Benjamini-Hochberg correction are provided by SciPy \cite{SciPy}, via the \verb|scipy.stats.kruskal| and \verb|scipy.stats.false_discovery_control| functions.
+
+\vspace{1cm}
+\textbf{Discussion points for Pre-Processing:}
+\begin{itemize}
     \item structure wrong to read off a full set of features for a given individual
     \item required transposing, memory heavy operation
-    \item
-\end{itemize}
-
-% Both datasets required preparation before training. Raw Illumina array text files came in a format suitable for an EWAS, but not machine learning 
-
-\subsubsection{Feature Selection} \label{sec:feature-selection}
-\begin{itemize}
-    \item Kruskal-Wallis feature selection \cite{Kruskal1952UseOR}
-          \begin{itemize}
-              \item identifying "differentially methylated" cpg sites
-          \end{itemize}
+    \item Why we need feature selection (brief, I have a couple sources for it, benchmarks of model being able to train (check notebook), and the cost associated with lots of CpG sites, explainability for a clinical test (if you can do the same thing in less sites, you want to))
+    \item Kruskal Wallis chosen over Mann Whitney U to try achieve better class seperation
+    \item Kruskal wallis chosen over one-way ANOVA as no strong assumptions are made about the distribution from which the samples are drawn
+    \item we make the assumption that each CpG site is independent, not actually true
+    \item using q-values over p-values, false discovery correction.
 \end{itemize}
 
 \subsection{Training} \label{sec:training}
 
-Cross-validation and grid search were used to select model hyperparameters. In particular, the training dataset was split into 10 stratified folds for use in cross-valdiation. A grid search was used to evaluate the different combinations of regularisation strength (\(\alpha\)) and 
+Cross-validation and grid search were used to select model hyperparameters. In particular, the training dataset was split into 10 stratified folds for use in cross-valdiation. A grid search was used to evaluate the different combinations of regularisation strength (\(\alpha\)) and \(L_1\) ratio (\(\lambda\)).
 
 \cite{scikit-learn}
 \begin{itemize}
@@ -412,64 +401,89 @@ Cross-validation and grid search were used to select model hyperparameters. In p
 \end{itemize}
 
 \section{Results} \label{sec:results}
+
+\subsection{Site selection from Kruskal-Wallis}
+As discussed in the method (\ref{sec:feature-selection}), the Kruskal-Wallis test is used to select CpG sites associated with self-reported smoking exposure that are differentially methylated for all three classes of smoking-status. The test was ran independently on the \num{485577} CpG sites common to the 450k and EPIC arrays, using the observations from cohort 1. After correcting for false discovery rate, \num{3122} CpG sites remained with a \(p\text{-value} < 0.05\).
+
+% \begin{enumerate}
+%     \item Identifying differentially methylated CpG sites assoicated with self-reported smoking status: \(\sim\)480k sites \(\rightarrow\) 3122 sites
+%           \begin{itemize}
+%               \item[\checkmark] 485,577 sites common to both cohorts
+%               \item[\checkmark] as stated above, kruskal-wallis used to identify sites that were different between all 3 groups
+%               \item[\checkmark] identified 3122 with q-value\(< 0.05\)
+%               \item top 100 CpG sites from this in appendix table
+%           \end{itemize}
+% \end{enumerate}
+
+\subsection{Site selection from machine learning training}
+The \num{3122} sites selected from Kruskal-Wallis were further reduced in machine learning training. The Elastic Net logistic regression model automatically selected \num{2381} different sites to be used to predict smoking status. These \num{2381} sites can be further broken down in three sets of CpG sites, where each set contains the sites used to predict the probabilities for never, ex- and current smokers. The number of sites intersecting these sets and the full \num{3122} can be seen in Figure \ref{fig:model-intersect}. While \num{2381} total sites are used for the entire trained model, only \num{520} are common to predicting all 3 classes of smoking status. Additionally, only approximately 1600 CpG sites are used for the prediction a single class probability. While each sub-classifier only requires a smaller number of CpG sites to predict a class probability, we can see many of these sites are chosen disjointly to the other classifiers, leading to a larger number of CpG sites used in the entire model. 
+
+% \begin{enumerate}
+%     \item Training: 3122 sites \(\rightarrow\) 2381 sites
+%           \begin{itemize}
+%               \item[\checkmark] 3122 sites used from training
+%               \item[\checkmark] (The Elastic Net trained) model automatically selected 2381 different sites to be used to predict smoking status
+%               \item[\checkmark] 2381 was broken into 3 sets of CpGs and associated coefficients that each predicted logits for never, ex- and current smokers, respectively
+%                     \begin{itemize}
+%                         \item intersections of these sets is shown in figure (venn diagram)
+%                     \end{itemize}
+%           \end{itemize}
+% \end{enumerate}
+
+\textbf{Discussion points for this section:}
+\begin{itemize}
+    \item L1 norm applies sparsity \textit{per class}, rather than across all classes.
+\end{itemize}
+
+\subsection{Test set model performance (Cohort 1)} \label{sec:cohort1-performance}
+The trained model achieve near-perfect predictive performance on the Cohort 1 hold-out test set. The classification performance on this dataset can be seen in Figure \ref{fig:cohort1-cm}.
+
 \begin{enumerate}
-    \item Identifying differentially methylated CpG sites assoicated with self-reported smoking status: \(\sim\)480k sites \(\rightarrow\) 3122 sites
-    \begin{itemize}
-        \item 485,577 sites common to both cohorts 
-        \item as stated above, kruskal-wallis used to identify sites that were different between all 3 groups
-        \item identified 3122 with q-value\(< 0.05\)
-        \item top 100 CpG sites from this in appendix table 
-    \end{itemize}
-    \item Training: 3122 sites \(\rightarrow\) 2381 sites
-    \begin{itemize}
-        \item 3122 sites used from training
-        \item (The Elastic Net trained) model automatically selected 2381 different sites to be used to predict smoking status
-        \item 2381 was broken into 3 sets of CpGs and associated coefficients that each predicted logits for never, ex- and current smokers, respectively
-        \begin{itemize}
-            \item intersections of these sets is shown in figure (venn diagram)
-        \end{itemize}
-    \end{itemize}
     \item Performance on Cohort 1 test set
-    \begin{itemize}
-        \item Confusion matrices
-        \item ROC diagrams
-        \item Have tabulated data with ROC diagrams
-        \item Boxplots
-    \end{itemize}
-    \item Performance on Cohort 2 set
-    \begin{itemize}
-        \item As above
-        \item At a minimum, tabulated comparison. (Look into ROC comparison)
-    \end{itemize}
-    \item Benchmark performance of externally derived gold standard models (DNAmPACKYRS and mCigarette) in both cohorts
-    \begin{itemize}
-        \item Benchmarking scores against self-reported smoking status
-        \item ROC diagrams
-        \item quick evaluation if predictive performance is comparable in both cohorts used in this study
-    \end{itemize} 
-    \item Comparison of my model with externally derived gold standard models (DNAmPACKYRS and mCigarette)
-    \begin{enumerate}
-        \item comparisons of sites used in all 3 models
-        \begin{itemize}
-            \item Venn diagrams
-            \item Tables
-            \item Not much overlap between any of the 3 models, despite all 3 using the same substrate (feature space)
-        \end{itemize}
-        \item comparisons ROC performance
-        \begin{itemize}
-            \item ROC diagrams, pairwise between classes (ex vs current, current vs never, ex vs never)
-        \end{itemize}
-    \end{enumerate}
+          \begin{itemize}
+              \item Confusion matrices
+              \item ROC diagrams
+              \item Have tabulated data with ROC diagrams
+              \item Boxplots
+          \end{itemize}
 \end{enumerate}
 
-\subsection{Cohort 1: Training Results and Model Performance} \label{sec:cohort1-performance}
+\subsection{Independent cohort model performance (Cohort 2)} \label{sec:cohort2-performance}
+\begin{enumerate}
+    \item Performance on Cohort 2 set
+          \begin{itemize}
+              \item As above
+              \item At a minimum, tabulated comparison. (Look into ROC comparison)
+          \end{itemize}
+\end{enumerate}
 
-\subsection{Cohort 2: Independent Validation Cohort} \label{sec:val-cohort}
+\subsection{Benchmarking existing gold-standard models (Cohort 1 \& 2)} \label{sec:prior-benchmarks}
+\begin{enumerate}
+    \item Benchmark performance of externally derived gold standard models (DNAmPACKYRS and mCigarette) in both cohorts
+          \begin{itemize}
+              \item Benchmarking scores against self-reported smoking status
+              \item ROC diagrams
+              \item quick evaluation if predictive performance is comparable in both cohorts used in this study
+          \end{itemize}
+\end{enumerate}
 
-\subsubsection{Model Performance} \label{sec:cohort2-performance}
-
-\subsubsection{Comparison with Prior Results} \label{sec:model-comparison}
-
+\subsection{Comparison of trained model to existing results (Cohort 2)} \label{sec:model-comparisons}
+\begin{enumerate}
+    \item Comparison of my model with externally derived gold standard models (DNAmPACKYRS and mCigarette)
+          \begin{enumerate}
+              \item comparisons of sites used in all 3 models
+                    \begin{itemize}
+                        \item Venn diagrams
+                        \item Tables
+                        \item Not much overlap between any of the 3 models, despite all 3 using the same substrate (feature space)
+                    \end{itemize}
+              \item comparisons ROC performance
+                    \begin{itemize}
+                        \item only done in independent validation cohort, avoiding discovery bias for trained model
+                        \item ROC diagrams, pairwise between classes (ex vs current, current vs never, ex vs never)
+                    \end{itemize}
+          \end{enumerate}
+\end{enumerate}
 
 \section{Discussion}
 
@@ -480,9 +494,9 @@ Cross-validation and grid search were used to select model hyperparameters. In p
     \item train/test set choices in computer science vs biomedical science
     \item direction of discovery/validation cohorts, sex being a cofounder
     \item k-fold cross validation, fold size, using stratified folds
-    \begin{itemize}
-        \item instead of validation set, keeps training sizes larger
-    \end{itemize}
+          \begin{itemize}
+              \item instead of validation set, keeps training sizes larger
+          \end{itemize}
     \item coarse-to-fine cross-validation strategy
     \item choice of scoring metric (f1-macro)
     \item number of features used (model didn't converge at 10,000 features, did at 100 and 1000)
@@ -514,6 +528,41 @@ Cross-validation and grid search were used to select model hyperparameters. In p
 All participants gave written informed consent, and the study was approved by the national ethics committee. Data was anonymised and only age, biological sex and self-reported smoking values were extracted for comparison with matching whole blood DNA methylation values.
 
 \subsection{Acknowledgements}
+
+\section{Figures and Tables}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Venn_NZ_3gps.jpg}
+        \caption{Intersection of sets of CpG sites used to predict never, ex- and current smokers. While a total of 2381 CpG sites are used in the entire model, only 520 CpG sites are used in all three predictions, and each sub-classifier only uses approximately 1600 CpG sites.}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Venn_NZ_3gps_KWlist.jpg}
+        \caption{Same diagram above intersected with the original 3122 CpG sites returned from Kruskal-Wallis.}
+    \end{subfigure}
+    \caption{Intersections of sets of CpG sites used in model}
+    \label{fig:model-intersect}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_cm.png}
+        \caption{Confusion Matrix for Cohort 1 test set. The model makes very few incorrect predictions.}
+    \end{subfigure}
+    % \hfill
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cohort1_cm_n.png}
+        \caption{Confusion Matrix (normalised) for Cohort 1 test set. As before, we can see the model achieves near-perfect predictive performance.}
+    \end{subfigure}
+    \caption{Confusion Matrices (Cohort 1: test set)}
+    \label{fig:cohort1-cm}
+\end{figure}
 
 \addcontentsline{toc}{section}{References}
 \printbibliography
