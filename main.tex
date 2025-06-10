@@ -105,7 +105,7 @@
 \subsection{Tobacco-related health issues}
 The harms associated with tobacco use are well recognised. Tobacco kills up to half its users who do not quit and more than 8 million people per year, including an estimated 1.3 million non-smokers due to second hand smoke \cite{who_tobacco}. Smoking causes cancer, heart and lung disease, stroke, type 2 diabetes, and harmful reproductive effects \cite{hhs_smoking_2014}. There is a growing body of evidence suggesting a causal relationship between smoking and mental health issues \cite{taylor2019smoking}. Clearly, such negative impacts on patient health due to tobacco use are undesirable, just as they are avoidable. For these reason, tobacco usage is of great concern to health professionals. The World Health Organization asserts that surveillance is key for addressing the tobacco epidemic, as tracking tobacco usage indicates how to shape policy \cite{who_tobacco}.
 
-\subsection{Self-reported smoking status}
+\subsection{Self-reported smoking status} \label{sec:srss}
 Current- surveillance relies on self-reported smoking data. That is, a patient's smoking history is recorded by them personally recalling and reporting. It is a convenient and cost-effective way of collecting smoking statistics. There are two main types of smoking data used to measure tobacco exposure: smoking status and smoking pack-years. Smoking status is label based on the history and habits of tobacco use. Individuals are binned into never-smokers, ex-smokers and current-smokers. Smoking pack-years is a calculated score that tries to quantify tobacco use. It is calculated as the number of packs of cigarettes smoked per day multiplied by years of smoking \cite{smokingpackyears}. For example, one pack-year is one pack per day for one year, or half a pack per day for two years. Therefore, smoking pack-years quantifies both the degree of exposure and duration of exposure equally.
 
 Self-reported smoking data has several limitations. Relying on individuals recounting information can introduce bias. Self-reported smoking data is prone to inaccuracy due to stigma, recall bias and a lack of information on second-hand exposure \cite{park2015correlation, gorber2009accuracy}. That is, the social pressure to deny partaking in stigmatised behaviours, forgetting details and information, and not being aware of sources of second-hand exposure can all influence the results of self-reported smoking data. A method of using objective evidence to determine smoking history could overcome these issues. On the other hand, the inaccuracy of self-reported smoking data can differ between population groups. For example, studies suggest that teens are more likely to provide false responses in smoking surveys \cite{park2015correlation}. Moreover, tobacco consumption differs between social groups, with smoking more prevalent in low-education and low-socio-economic groups \cite{cdc2019_smoking}.
@@ -180,6 +180,10 @@ Additionally, these arrays are compatible with DNA from multiple different cell 
 % \end{itemize}
 
 \subsection{Machine learning in epigenetics}
+\begin{itemize}
+    \item add which works are supervised/semi-supervised/un-supervised
+\end{itemize}
+
 Broadly, machine learning algorithms are split into one of two tasks: regression or classification. The most significant distinction between these two tasks is the choice of supervised learning labels. Regression algorithms are trained against continuous, numeric scores, while classification algorithms are trained against discrete class labels. The choice of label in turn determines the output produced by the algorithm.
 Machine learning has already seen use in many areas of clinical epigenetics. We begin with a review of some developed methods, addressing both classification and regression tasks.
 
@@ -218,7 +222,7 @@ Lu et al. \cite{lu2019dna} proposed DNAmPACKYRS as a DNA methylation based score
 As surrogate biomarker for lifespan, DNAmPACKYRS performs better than self-reported pack-years. Firstly, DNAmPACKYRS can be used to predict lifespan in never-smokers \cite{lu2019dna}, whereas self-reported pack-years cannot (all self-reported values would be 0). Additionally, DNAmPACKYRS is a more significant predictor of lifespan than self-reported pack-years. Across 4 out of 5 datasets DNAmPACKYRS had a smaller Cox regression p-values when compared to self-reported pack-years \cite{lu2019dna}.
 % \(8.10\mathrm{e}{-23}\) vs \(1.12\mathrm{e}{-11}\), \(8.51\mathrm{e}{-5}\) vs \(2.13\mathrm{e}{-3}\), \(7.17\mathrm{e}{-12}\) vs \(7.03\mathrm{e}{-12}\), \(2.1\mathrm{e}{-19}\) vs \(6.4\mathrm{e}{-19}\), and \(5.33\mathrm{e}{-4}\) vs \(1.78\mathrm{e}{-1}\), respectively. 
 
-There are some limitations with the DNAmPACKYRS score. Since DNAmPACKYRS is only evaluated as a surrogate biomarker in the GrimAge paper, there is no reporting on its performance of predicting smoking status. However, this can be done independently (see \ref{sec:prior-benchmarks}). When performed, we can see that while DNAmPACKYRS achieves good predictive performance separating never-smokers from current-smokers (ROC AUC = 0.991) and ex-smokers from current-smokers (ROC AUC = 0.915), the score is not optimised for separating never-smokers from ex-smokers (ROC AUC = 0.798). Additionally, the choice of self-reported pack-years as a regression label introduces a source of inaccuracy, discussed below (see \ref{sec:mcigarette}: \nameref{sec:mcigarette}).
+There are some limitations with the DNAmPACKYRS score. Since DNAmPACKYRS is only evaluated as a surrogate biomarker in the GrimAge paper, there is no reporting on its performance of predicting smoking status. However, this can be done independently (see \ref{sec:prior-benchmarks}). When performed, we can see that while DNAmPACKYRS achieves excellent predictive performance separating never-smokers from current-smokers (ROC AUC = 0.991) and ex-smokers from current-smokers (ROC AUC = 0.915), the score does not perform as well when separating never-smokers from ex-smokers (ROC AUC = 0.798). Additionally, the choice of self-reported pack-years as a regression label introduces a source of inaccuracy, discussed below (see \ref{sec:mcigarette}).
 
 % Notes for DNAmPACKYRS/mCigarette:
 % \begin{itemize}
@@ -235,7 +239,7 @@ As a result, mCigarette achieves incremental performance on previous scores. In 
 
 % Two ex-smokers (both 70 years of age) with the same pack year value but very different smoking-related chronic disease risk.  Person A gave up smoking 1year ago but had smoked half a pack a day for the last 40 years (20 pack years), Person B smoked 2 packs a day from 15-25 years age (20 pack years) but hasn’t smoked in 45 years.  Chronic disease (eg. Lung cancer and heart disease) risk is much higher in person A than B.  Moreover, we would expect very different smoking related DNA methylation values between the two people.
 
-There are limitations associated with the mCigarette score. The choice of smoking pack-years may be inaccurate as a training marker, due to the potential to label two individuals with significantly different smoking exposure as the same. As an example, consider two ex-smokers both of 70 years of age. Individual A gave up smoking 1 year ago, but smoked half a pack of cigarettes per day for 40 years prior, which equates to 20 pack-years. Individual B smoked 2 packs of cigarettes per day from ages 15 to 25 but has quit since, which also equates to 20 pack-years. Both individuals have the same smoking pack-years score, but different lengths of cessation (1 year vs 45 years). This is problematic, as risk of chronic disease (e.g. lung cancer and cardiovascular disease) would be expected to be much higher in individual A than individual B, as duration of smoking carries greater risk than intensity of smoking \cite{potter2024pack}. Moreover, we would expect different smoking-related methylation signals for the two individuals. Thus, individuals with less intense but longer duration of smoking exposure may have underestimated smoking exposure by such a model. Therefore, smoking pack-years is an inaccurate choice of training label, as it does not capture the importance of length of smoking cessation. Note that this limitation is also associated with the DNAmPACKYRS score.
+There are limitations associated with the mCigarette score. The choice of smoking pack-years may be inaccurate as a training label, due to the potential to label two individuals with significantly different smoking exposure as the same. As an example, consider two ex-smokers both of 70 years of age. Individual A gave up smoking 1 year ago, but smoked half a pack of cigarettes per day for 40 years prior, which equates to 20 pack-years. Individual B smoked 2 packs of cigarettes per day from ages 15 to 25 but has quit since, which also equates to 20 pack-years. Both individuals have the same smoking pack-years score, but different lengths of cessation (1 year vs 45 years). This is problematic, as risk of chronic disease (e.g. lung cancer and cardiovascular disease) would be expected to be much higher in individual A than individual B, as duration of smoking carries greater risk than intensity of smoking \cite{remen2018risk, flanders2003lung, lubin2006cigarette, doll1978cigarette}. Moreover, we would expect different smoking-related methylation signals for the two individuals. Thus, individuals with less intense but longer duration of smoking exposure may have underestimated smoking exposure by such a model. Therefore, smoking pack-years is an inaccurate and biased choice of training label, as it assigns equal importance to smoking duration and smoking intensity \cite{potter2024pack}. Note that this limitation is associated with the DNAmPACKYRS score, which also used smoking pack-years for training labels. 
 
 % \begin{itemize}
 %     \item[\checkmark] (?) seeking to address not being able to differentiate never- smokers and ex-smokers
@@ -275,7 +279,7 @@ The loss function then becomes:
 \end{equation}
 where the \(L_1\)-norm and \(L_2\)-norm are as before.
 
-Colloquially, this model can be thought of as training \(K\) individual logistic regression sub-predictors, where each sub-predictor is tasked only with predicting one of the \(K\) classes. The softmax function ensures that for each example, the \(K\) predicted probabilities will all add to 1. Regularisation terms work as before, but are now per-sub-predictor.
+Colloquially, this model can be thought of as training \(K\) individual logistic regression predictors. Each of \(K\) vectors of \(\beta\) is a class-specific linear predictor that produces logits for predicting a single class. The softmax function ensures, that for each example, the \(K\) predicted probabilities from these logits will add to 1. Regularisation terms work as before, but are now regularising coefficients per-class-specific predictor.
 
 \subsection{Datasets}
 This work uses two datasets, a discovery cohort and a independent test cohort.
@@ -392,14 +396,11 @@ The \num{3122} sites identified by the Kruskal-Wallis test were then utilised in
     \item choice of F1-macro
 \end{itemize}
 
-\section*{Production of evaluation metrics}
-The potential utility of the model lies in its ability to differentiate bewteen pairs of classes (i.e. never- vs current-, ex- vs current- and never- vs ex-). Moreover, the multiclass model can be thought of as an ensemble of three classifiers that each predict the probability of a different class (see \ref{sec:algorithm}). Therefore, the model's ability to separate classes was evaluated using receiver operating characteristic (ROC) curves, using a one vs one (OvO) strategy to compare pairs of classes \cite{scikit-learn-roc-example}. 
+\subsection{Producing evaluation metrics}
+The potential utility of a smoking model lies in its ability to differentiate between pairs of classes (i.e. never- vs current-, ex- vs current- and never- vs ex-). Moreover, the multi-class model can be thought of as an ensemble of three classifiers that each predict the probability of a different class (see \ref{sec:algorithm}). Therefore, the model's ability to separate classes was evaluated using receiver operating characteristic (ROC) curves, using a one vs one (OvO) strategy to compare pairs of classes \cite{scikit-learn-roc-example}. Two types of ROC curves were evaluated. First, ROC curves of the logits for each of the class-specific predictors were evaluated. These show a single set of coefficients ability to separate two classes. Subsequently, macro-averaging \cite{scikit-learn-roc-example} was used to aggregate the outputs of both relevant class-specific predictors, which generated a single ROC curve used for evaluating OvO class separation of the entire model. 
+The red points on ROC curves indicate the optimal threshold for separation, calculated using Youden's index \cite{youden1950index}. Area under the curve was used as an aggregated score for how well the model separated the two classes. 
 
-These show a \textit{single set of coefficients} ability to separate two classes. 
-
-Red points on these ROC curves indicate the optimal classifier for a given curve, calculated using Youden's index \cite{youden1950index}. 
-
-Area under the curve gives an aggregated score for separation of classes, with an AUC\(=1\) being perfect discrimination. 
+with an AUC\(=1\) being perfect discrimination. 
 
 AUC of 0.9 or higher:
 Indicates excellent discrimination ability, suggesting the test is very effective at distinguishing between those with and without the condition. 
@@ -416,16 +417,13 @@ Indicates poor discrimination, suggesting the test is of limited value in distin
 AUC of 0.5:
 Indicates no discrimination, meaning the test is no better than random.
 
-
-Subsequently, macro-averaging \cite{scikit-learn-roc-example} were used to aggregate the performance of both relevant \textit{sets of coefficients} to generate a single ROC curve, to evaluate the OvO class separation of the entire model. 
-
 \section{Results} \label{sec:results}
 
 \subsection{Site selection from Kruskal-Wallis}
 As discussed in the method (\ref{sec:feature-selection}), the Kruskal-Wallis test was used to select CpG sites associated with self-reported smoking exposure that are differentially methylated for all three classes of smoking-status. The test was run independently on the \num{485577} CpG sites common to the 450k and EPIC arrays, using the observations (DNA methylation values) from cohort 1. After correcting for false discovery rate, \num{3122} CpG sites remained with a \(p\text{-value} < 0.05\).
 
 % \begin{enumerate}
-%     \item Identifying differentially methylated CpG sites assoicated with self-reported smoking status: \(\sim\)480k sites \(\rightarrow\) 3122 sites
+%     \item Identifying differentially methylated CpG sites associated with self-reported smoking status: \(\sim\)480k sites \(\rightarrow\) 3122 sites
 %           \begin{itemize}
 %               \item[\checkmark] 485,577 sites common to both cohorts
 %               \item[\checkmark] as stated above, kruskal-wallis used to identify sites that were different between all 3 groups
@@ -436,11 +434,9 @@ As discussed in the method (\ref{sec:feature-selection}), the Kruskal-Wallis tes
 
 \subsection{Site selection from machine learning training}
 From the \num{3122} sites identified by the Kruskal-Wallis test, the Elastic Net logistic regression model selected \num{2381} different sites to be used to predict smoking status. These \num{2381} sites consisted of three sets of CpG sites, where each set contained the sites used to predict the probabilities for never-, ex- and current-smokers, respectively.
-The intersections of these sets and the full \num{3122} sites identified by Kruskal-Wallis can be seen in Figure \ref{fig:}. While \num{2381} total sites were used for the entire trained model, only \num{520} were common to predicting all 3 classes of smoking status. Additionally, only approximately 1600 CpG sites were used for predicting each of the single class probabilities.
+The intersections of these sets and the full \num{3122} sites identified by Kruskal-Wallis can be seen in Figure \ref{fig:}. While \num{2381} total sites were used for the entire trained model, only \num{520} were common to predicting all 3 classes of smoking status. While each class-specific predictor requires a similar number of CpG sites (\(\sim\!1600\)) to predict the probability of a class, there were X sites used in the prediction of only two of the three classes, and Y sites used only to prediction one class \textbf{(add percentages)}. Consequently, this leads to a larger number of CpG sites used in the entire model.
 
-While each sub-predictor requires a similar number of CpG sites to predict the probability of a class, there were X sites used in the prediction of only two of the three classes, and Y sites used only to prediction one class \textbf{(add percentages)}. Consequently, this leads to a larger number of CpG sites used in the entire model.
-
-\textbf{test if only the intersects perform well "because of the nature of these intersects, the model was re-run on these 520 sites that showed utility across all threee classes, to see if this is a pragmatic way of reducing sites used in the model and to better understand the predictive power of those sites not used in all three"}
+% \textbf{test if only the intersects perform well "because of the nature of these intersects, the model was re-run on these 520 sites that showed utility across all threee classes, to see if this is a pragmatic way of reducing sites used in the model and to better understand the predictive power of those sites not used in all three"}
 
 % \begin{enumerate}
 %     \item Training: 3122 sites \(\rightarrow\) 2381 sites
@@ -460,12 +456,12 @@ While each sub-predictor requires a similar number of CpG sites to predict the p
 \end{itemize}
 
 \subsection{Test set model performance (Cohort 1)} \label{sec:cohort1-performance}
-The trained model achieve good predictive performance on the Cohort 1 hold-out test set. The classification performance on this dataset can be seen in Figure \ref{fig:}. Out of the 95 individuals in this dataset, only 15 were misclassified by the model. Per class, \SI{92}{\percent} of never-smokers were correctly classified, while \SI{82}{\percent} of both ex-smokers and current-smokers were correctly classified.
+The trained model achieved excellent predictive performance on the Cohort 1 hold-out test set. The classification performance on this dataset can be seen in Figure \ref{fig:}. Out of the 95 individuals in this dataset, only 15 were misclassified by the model. Per class, \SI{92}{\percent} of never-smokers were correctly classified, while \SI{82}{\percent} of both ex-smokers and current-smokers were correctly classified.
 
 Initial outputs of this strategy can be seen in Figure \ref{fig:}.
 
 This can be seen in Figure \ref{fig:}. The model achieves macro-averaged ROC area under the curves (ROC AUC) of 0.977, 0.941 and 0.909 for separating never- vs current-, ex- vs current-, and never- vs ex-, respectively.
-Finally, distributions of probabilities per class, per sub-predictor, can be seen in Figure \ref{fig:}. Here we can see each sub-predictor generally predicts its positive class with high probability, and the two negative classes with low probability. This separation is good for the predictor of current-smokers and never-smokers, with little to no overlap between the tails of boxplots. However, separation is modest for ex-smokers, as there is some overlap between ex-smokers and the other classes.
+Finally, distributions of probabilities per class, per class-specific predictor, can be seen in Figure \ref{fig:}. Here we can see each class-specific predictor generally predicts its positive class with high probability, and the two negative classes with low probability. This separation is good for the predictor of current-smokers and never-smokers, with little to no overlap between the tails of boxplots. However, separation is modest for ex-smokers, as there is some overlap between ex-smokers and the other classes.
 
 
 This is perhaps unsurprising, given that ex-smokers are the intermediate class, and a biological state between current- and never-smokers.
@@ -491,15 +487,18 @@ This is perhaps unsurprising, given that ex-smokers are the intermediate class, 
 % \end{enumerate}
 
 \subsection{Independent cohort model performance (Cohort 2)} \label{sec:cohort2-performance}
-The trained model achieved modest to poor predictive performance on the Cohort 2 independent test dataset. The classification performance on this dataset can be seen in Figure \ref{fig:}. Out of the 984 individuals in this dataset, 271 were misclassified by the model. Per class, \SI{71}{\percent} of current-smokers and \SI{79}{\percent} of ex-smokers were correctly classified, while only \SI{0.34}{\percent} of never-smokers were correctly classified, with \SI{0.65}{\percent} of never-smokers being confused for ex-smokers. As above, the model's ability to separate classes was also evaluated. Individual sub-predictor performance can be seen in Figure \ref{fig:}. These are aggregated into macro-averaged ROC curves in Figure \ref{fig:}. While the model maintains the ability to discriminate never- vs current-smokers (ROC AUC \(=0.971\)) in the independent test set, the ability to separate ex- vs current-smokers is modest (ROC AUC \(=0.859\)), and the ability to separate never- vs ex-smokers is poor (ROC AUC \(=0.686\)). Finally, distributions of probabilities per class, per sub-predictor, can be seen in Figure \ref{fig:}. As seen in the ROC curves, the model is able to separate current-smokers from the other two classes, predicting high probabilities in the current-smoker sub-predictor, and low probabilities in the other two predictors. However, we can see in both the never-smoker and ex-smoker sub-predictor boxplots there is significant overlap, leading to misclassification and confusion between these two classes.
+The trained model achieved excellent to poor predictive performance on the Cohort 2 independent test dataset. The classification performance on this dataset can be seen in Figure \ref{fig:}. Out of the 984 individuals in this dataset, 271 were misclassified by the model. Per class, \SI{71}{\percent} of current-smokers and \SI{79}{\percent} of ex-smokers were correctly classified, while only \SI{0.34}{\percent} of never-smokers were correctly classified, with \SI{0.65}{\percent} of never-smokers being confused for ex-smokers. As above, the model's ability to separate classes was also evaluated. Individual class-specific predictor performance can be seen in Figure \ref{fig:}. These are aggregated into macro-averaged ROC curves in Figure \ref{fig:}. While the model maintains the ability to discriminate never- vs current-smokers (ROC AUC \(=0.971\)) in the independent test set, the ability to separate ex- vs current-smokers is good (ROC AUC \(=0.859\)), and the ability to separate never- vs ex-smokers is poor (ROC AUC \(=0.686\)). Finally, distributions of probabilities per class, per class-specific predictor, can be seen in Figure \ref{fig:}. As seen in the ROC curves, the model is able to separate current-smokers from the other two classes, predicting high probabilities in the current-smoker class-specific predictor, and low probabilities in the other two predictors. However, we can see in both the never-smoker and ex-smoker class-specific predictor boxplots there is significant overlap, leading to misclassification and confusion between these two classes.
 
-\begin{enumerate}
-    \item Performance on Cohort 2 set
-          \begin{itemize}
-              \item As above
-              \item At a minimum, tabulated comparison. (Look into ROC comparison)
-          \end{itemize}
-\end{enumerate}
+% \begin{enumerate}
+%     \item Performance on Cohort 2 set
+%           \begin{itemize}
+%               \item As above
+%               \item At a minimum, tabulated comparison. (Look into ROC comparison)
+%           \end{itemize}
+% \end{enumerate}
+\begin{itemize}
+    \item compute performance breaking cohort 2 up based on gender
+\end{itemize}
 
 
 \subsection{Comparison of trained model to existing results (Cohort 2)} \label{sec:model-comparisons}
@@ -514,14 +513,15 @@ The trained model achieved modest to poor predictive performance on the Cohort 2
           \end{itemize}
 \end{enumerate}
 
-\subsubsection{Comparison of CpG sites used in all 3 models}
-The intersections of the different sites used in DNAmPACKYRS and mCigarette with the never-, ex- and current-sub-predictors can be seen in Figures \ref{fig:}, \ref{fig:} and \ref{fig:}, respectively. Only \(\sim \! 10\) CpG sites were common to all three models. However, only 14 CpG sites were common between DNAmPACKYRS and mCigarette, with 158 and 1241 CpG sites unique to those models, respectively. Additionally, all three models were produced from datasets using the same \num{449521} CpG sites. Therefore, the intersection of the trained model with previous models appears to be consistent. 
-% Shrinkage was not consistent across all three models. 
+\subsubsection{Comparison of CpG sites used in all 3 models} \label{sec:sites-comparison}
+The intersections of the different sites used in DNAmPACKYRS and mCigarette with the never-, ex- and current-class-specific predictors can be seen in Figures \ref{fig:}, \ref{fig:} and \ref{fig:}, respectively. Only \(\sim \! 10\) CpG sites were common to all three models. However, only 14 CpG sites were common between DNAmPACKYRS and mCigarette, with 158 and 1241 CpG sites unique to those models, respectively. While there does not appear to be significant overlap between the features used in the trained model and either DNAmPACKYRS and mCigarette, neither was there significant overlap between the features used in DNAmPACKYRS and mCigarette, despite all three models being produced from datasets using the same \num{449521} CpG sites. Therefore, the intersection of (or lack thereof) the trained model with previous models appears to be consistent. 
 
 \begin{itemize}
-    \item Venn diagrams
+    \item discussion around shrinkage
+    \begin{itemize}
+        \item more noise with mCigarette, more training data leads to more training sites from KW as fewer sites are removed due to false discovery
+    \end{itemize}
     \item Tables
-    \item Not much overlap between any of the 3 models, despite all 3 using the same substrate (feature space)
 \end{itemize}
 
 \subsubsection{Evaluating  performance with ROC comparisons}
@@ -534,7 +534,7 @@ To avoid discovery bias associated with the training cohort, model comparisons w
 
 \section{Discussion}
 
-\subsection*{Choices made in development}
+\subsection{Choices made in development}
 \begin{itemize}
     \item class weight balancing
     \item feature pruning for cohorts, ensuring compatibility
@@ -550,24 +550,49 @@ To avoid discovery bias associated with the training cohort, model comparisons w
     \item compute power (training times) wasn't an issue, but memory was (preprocessing)
 \end{itemize}
 
-\subsection*{Comparisons to other models in validation cohort}
+\subsection{Limitations of this work} \label{sec:limitations}
+There are several limitations associated this work. 
+
+Firstly, labels for supervised learning used self-reported data. Self-reported data is prone to inaccuracy (see 
+\ref{sec:srss}), and therefore, potentially propagates the biases associated with self-reported into a trained model. In training, an incorrectly labelled example could lead to gradient updates which confusion the model, reducing accuracy or learning incorrect effects. In evaluation, an incorrectly labelled example could lead to a correct model prediction being identified as erroneous, skewing the perception of the model's accuracy. This limitation is not unique to this work, and is present for the DNAmPACKYRS and mCigarette scores as well. 
+
+Additionally, the choice of labels potentially oversimplified the task of classifying smoking exposure. The class labels (never-, ex-, current-) fail to differentiate individuals with varied smoking histories that fall into the same class. Specifically, never-, ex- and current-smokers are not separated between those with second-hand smoking exposure and those without, different lengths of smoking cessation, and intensity of smoking exposure, respectively. Moreover, these subclasses would be expected to have different health outcomes \cite{remen2018risk, flanders2003lung, lubin2006cigarette, doll1978cigarette} and methylation signals, due to the varying degrees of cessation and exposure. This could potentially have reduced the performance of the model, as each class-specific predictor is learning to predict several differentially methylated signals.
+% \vspace{1cm}
+% \textbf{Notes for editing/editor}
+% \begin{itemize}
+%     \item I don't mention self reported labels as a limitation of DNAmPACKYRS and mCigarette in their original sections. Should I?
+%     \item Thought about adding a sentence about overcoming the self-reported limitation, but there doesn't seem to be a clear answer? 
+%     \item \textit{Alternative wording?: Specifically, never-smokers are not separated between those with second-hand smoking exposure and those without, ex-smokers are not separated between the different lengths of smoking cessation, and current-smokers are not separated by the intensity of smoking exposure.}
+% \end{itemize}
+
+Secondly, the quantity of available training data was limited. Compared to previous results, the trained model was only trained on 848 individuals, compared to \num{1731} individuals for DNAmPACKYRS and \num{17865} individuals for mCigarette. All three models (trained model, DNAmPACKYRS, mCigarette) were produced from datasets containing the same CpG sites (the intersection of 450k and EPIC arrays) and used similar statistical techniques to select training features. While the trained model was produced from a dataset only containing males, separating males from females resulted in only an incremental gain in performance (see \ref{sec:cohort2-performance}), suggesting sex is not a confounding variable. Altogether, this suggests that the size of the training dataset was a significant factor in the reduced performance of the trained model, which is a well-recognised observation \cite{bishop2006pattern}. 
+
+\subsection{Future Directions}
+There are several future directions to take this work.
+
+As mentioned in \ref{sec:limitations}, logistic regression model performance could be improved with different class labels. While this work used never-, ex- and current-smokers as labels, further division into never-, passive-, quit-long-, quit-recent-, light-current-, and heavy-current-smokers could improve the model's ability to model the different trends seen in a methylation signal. However, this would require the collection of additional self-reported smoking data, namely, length of cessation, smoking intensity and passive smoking exposure. Moreover, such data would carry the same biases associated with self-reported data, and in some cases be even less reliable. For example, accurate collection of second-hand smoking exposure is very difficult due to a variety of potential sources of exposure, while collecting self-reported length of cessation is more prone to recall error than smoking pack-years or self-reported smoking status. Therefore, such a direction would require more reliable methods for collecting self-reported data. 
+
+Recent work has shown promise integrating principal component analysis (PCA) into Elastic Net model training \cite{higgins2022computational}. Using only a single additional step, PC-based Elastic Net showed improvements in reliability and performance, due to reducing the effect of noise present in the dataset. Moreover, using Elastic Net models trained on principal components (rather than CpG sites) has benefits for interpretability and regularisation. 
+
 \begin{itemize}
-    \item obviously ROC curves, etc.
-    \item how many features selected during training
-    \item
+    \item Would like coefficients to represent different effects/factors contributing towards smoking
+    \item Group effect will select multiple related CpG sites to be used in the model
+    \item Principal components aggregates the related methylation of several CpG sites to a single effect
+    \item Reducing the input features for a trained machine learning model should improve overfitting
+    \item Potential for better comparison between similar trained Elastic Net models
+    \item This was seen with trained model vs DNAmPACKYRS vs mCigarette, not much overlap between CpG sites, but perhaps PCA could be insightful to the related effects being captured by the model
 \end{itemize}
 
-\subsection*{Limitations of my model vs other models}
+\vspace{1cm}
 \begin{itemize}
-    \item trained only on males
-    \item much smaller dataset size \((n)\)
-    \item comparison of distributions of sex, age, etc in training cohorts (potential confounders)
-          \begin{itemize}
-              \item this is likely just a limitation of the dataset and the number of participants
-          \end{itemize}
+    \item Want to explore other machine learning models:
+    \begin{itemize}
+        \item Decision trees
+        \item Ensemble
+        \item Gradient boosting (XGBoost)
+    \end{itemize}
+    \item 
 \end{itemize}
-
-\subsection*{Future Directions}
 
 \section{Footnotes}
 
