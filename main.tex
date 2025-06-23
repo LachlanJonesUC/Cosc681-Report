@@ -259,6 +259,7 @@ As discussed, there are limitations associated with using smoking pack-years as 
 % mention that SRSS is more reliable than pack-years
 % srss abbreviation 
 
+\newpage
 \section{Method}
 
 \subsection{Algorithm} \label{sec:algorithm}
@@ -389,7 +390,7 @@ The \num{3122} sites identified by the Kruskal-Wallis test were then utilised in
 
 Two of the hyperparameters required tuning: regularisation strength (\(\alpha\)) and \(L_1\) ratio (\(\lambda\)). Values for these were determined using a combination of k-fold cross-validation and grid search. In particular, the training dataset was split into 10 stratified folds for use in cross-validation. A choice of \(k=10\) was used to ensure each run in the cross-validation loop contained sufficient training data, because of the relatively low training dataset size. Folds were chosen to be stratified to because of the class imbalance. Cross-validation was used instead of a typical validation hold-out set in order to preserve the size of the training dataset. A grid search was used to evaluate the different combinations of hyperparameters. \(F_1\)-macro was selected as the scoring function to evaluate each fit, as each class is equally represented in the score, in spite of class imbalance. Outputs of cross-validation included the mean and standard deviation of \(F_1\)-macro scores across the 10 folds per fit. These were then used to calculate 95\% confidence intervals (see Figure \ref{fig:cross-validation}). Because the majority of hyperparameter choices had overlapping 95\% confidence intervals, they were deemed to not be statistically different. Therefore, hyperparameters were selected to increase regularisation strength and minimise the number of features used in the final model. This resulted in a choice of \(\alpha = 0.2\) and \(\lambda = 0.85\), which were used to retrain the Elastic Net model on the entire training dataset. Henceforth, we refer to this trained model as Elastic Net Smoking-Status (ENSS). Implementations of cross-validation and grid search were provided by scikit-learn, via the \verb|sklearn.model_selection.StratifiedKFold| and \verb|sklearn.model_selection.GridSearchCV| classes.
 
-\begin{figure}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.8\linewidth]{cross_validation.png}
     \caption[Cross-validation scores per fit]{\(F_1\)-macro scores for each fit during cross-validation. Error bars indicate 95\% confidence intervals. Because of the overlapping confidence intervals, the choices of hyperparameters were not deemed to be statistically different.}
@@ -398,6 +399,7 @@ Two of the hyperparameters required tuning: regularisation strength (\(\alpha\))
 
 Additionally, a linear regression Elastic Net model was trained to benchmark against, using the same algorithm seen in DNAmPACKYRS and mCigarette (see Equation \ref{eqn:lin_elastic_net}). This model used the same choice of hyperparameters as the logistic regression model, and used self-reported pack-years as a training label. The implementation of this model was provided by scikit-learn, via the \verb|linear_model.ElasticNet| class.
 
+\newpage
 \section{Results} \label{sec:results}
 
 \subsection{Site reduction from feature selection and regularisation}
@@ -406,9 +408,9 @@ As discussed in the method (\ref{sec:feature-selection}), the Kruskal-Wallis tes
 From the \num{3122} sites identified by the Kruskal-Wallis test, the Elastic Net logistic regression model selected \num{2381} different sites used in predicting smoking status. These \num{2381} sites consisted of three sets of CpG sites, where each set contained the sites used to predict the probabilities for never-, ex- and current-smokers, respectively.
 The intersections of these sets can be seen in Figure \ref{fig:cpg-intersection-internal}. While \num{2381} total sites were used for the entire model, only \num{520} were common to predicting all 3 classes of smoking status. While each class-specific predictor regularised to a similar number of CpG sites (\num{1653} for never, \num{1627} for ex and \num{1514} for current), there were \num{1373} sites used in the prediction of exactly two of the three classes, and \num{488} sites used in the prediction of exactly one class. The limited overlap between the features used in each class-specific predictor was unsurprising, as the \(L_1\)-norm is applied per class (see Equation \ref{eqn:mc_log_elastic_net}) rather than across all parameters used in the model. However, this property is not desirable, as it led to a larger number of CpG sites used in the entire model.
 
-\begin{figure}[h]
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.7\linewidth]{venn_diagrams/predictor_intersect_placeholder.png}
+    \includegraphics[width=0.6\linewidth]{venn_diagrams/predictor_intersect_placeholder.png}
     \caption[Model CpG site intersections]{Intersection of CpG sites used per class-specific predictor}
     \label{fig:cpg-intersection-internal}
 \end{figure}
@@ -507,7 +509,7 @@ ENSS achieved excellent predictive performance on the Cohort 1 hold-out test set
 
 The model's ability to separate classes was also evaluated. Macro-averaged OvO ROC curves for the entire model can be seen in Figure \ref{fig:cohort1-macro-rocs}. These were generated by aggregating OvO ROC curves of the class-specific predictors, seen in Figure \ref{fig:cohort1-initial-rocs}. The model achieved macro-averaged OvO ROC-AUCs of: 0.977 for separating never-smokers from current-smokers, 0.941 for separating ex-smokers from current-smokers, and 0.909 for separating never-smokers from ex-smokers. Overall, we can see the model achieved excellent performance separating each of the pairs of classes.
 
-\begin{figure}[p]
+\begin{figure}[tb]
     \centering
     \begin{subfigure}{0.48\linewidth}
         \centering
@@ -633,7 +635,6 @@ Finally, distributions of probabilities per class, per class-specific predictor,
 \end{figure}
 
 \newpage
-
 \subsubsection{Separating by sex}
 
 \begin{figure}[p]
@@ -710,31 +711,30 @@ ENSS achieved AUCs of: 0.980 on males and 0.964 on females for separating never-
 
 The intersections of the different sites used in DNAmPACKYRS and mCigarette with the never-, ex- and current-smoker class-specific predictors can be seen in Figure \ref{fig:cpg-intersection-external}. There was limited overlap between the CpG sites used in all three models. Only 11 sites were common to all three models. Per class-specific predictor, 11 sites were common to the never-smokers predictor, DNAmPACKYRS and mCigarette, 10 sites were common to the ex-smokers predictor, DNAmPACKYRS and mCigarette, and 10 sites were common to the current-smokers predictor, DNAmPACKYRS and mCigarette. However, only 14 CpG sites were common between DNAmPACKYRS and mCigarette, with 158 and 1241 CpG sites unique to those models, respectively. While there does not appear to be significant overlap between the features used in ENSS and either DNAmPACKYRS and mCigarette, neither was there significant overlap between the features used in DNAmPACKYRS and mCigarette, despite all three models being produced from datasets using the same \num{449521} CpG sites. Therefore, the intersection of (or lack thereof) ENSS with previous models appears to be consistent. This could be indicative of redundancy within the methylation signal, where different models can each select several different CpG sites to achieve the same effect.
 
-\begin{figure}
+\begin{figure}[p]
     \centering
     \begin{subfigure}{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth, trim=5cm 0cm 5cm 0cm, clip]{venn_diagrams/intersect_compare_never.jpg}
+        \includegraphics[width=\linewidth, trim=7cm 0cm 7cm 0cm, clip]{venn_diagrams/intersect_compare_never.jpg}
         % \caption[short]{title}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth, trim=5cm 0cm 5cm 0cm, clip]{venn_diagrams/intersect_compare_never.jpg}
+        \includegraphics[width=\linewidth, trim=7cm 0cm 7cm 0cm, clip]{venn_diagrams/intersect_compare_never.jpg}
         % \caption[short]{title}
     \end{subfigure}
 
     \begin{subfigure}{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth, trim=5cm 0cm 5cm 0cm, clip]{venn_diagrams/intersect_compare_never.jpg}
+        \includegraphics[width=\linewidth, trim=7cm 0cm 7cm 0cm, clip]{venn_diagrams/intersect_compare_never.jpg}
         % \caption[short]{title}
     \end{subfigure}
     \caption[Intersections of CpG sites with prior models]{Intersections of CpG sites with prior models}
     \label{fig:cpg-intersection-external}
 \end{figure}
 
-
-\begin{table}[b]
+\begin{table}[p]
     \caption{Comparison of feature reduction steps} \label{table:sites-used}
     \begin{tabularx}{\textwidth}{X r r r r r r}
         \toprule
@@ -797,9 +797,10 @@ Comparing ENSS to prior results shows worse performance in the independent cohor
     \end{tabularx}
 \end{table}
 
+\newpage
 \section{Discussion}
 
-\begin{table}[b]
+\begin{table}[tb]
     \caption{Training dataset comparisons with prior studies} \label{table:dataset-compare-external}
     \begin{tabularx}{\textwidth}{X >{\raggedleft\arraybackslash}X >{\raggedleft\arraybackslash}X >{\raggedleft\arraybackslash}X}
         \toprule
