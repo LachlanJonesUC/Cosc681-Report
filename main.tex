@@ -1,4 +1,4 @@
-\documentclass[draft]{article} % 
+\documentclass{article} % [draft]
 \usepackage[a4paper, margin=1in]{geometry}
 \usepackage{setspace}
 \usepackage{parskip}
@@ -16,7 +16,8 @@
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{subcaption}
-% \usepackage{tikz}
+\usepackage{tikz}
+\usepackage{pgfplots}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
@@ -94,7 +95,7 @@
 \pagenumbering{roman}
 
 \begin{abstract}
-    Smoking is the leading cause of preventable death. Current surveillance relies on self-reported smoking data, which is prone to inaccuracy and bias. As an alternative, DNA methylation can be used as a biomarker for lifetime smoking exposure, and is not limited by the same biases as self-reported data. Prior research used self-report pack-years as a training label, which we deem to be an unreliable and biased score. We propose Elastic Net Smoking-Status (ENSS), a DNA methylation-based machine learning model which classifies lifetime smoking exposure. As an alternative to self-reported pack-years, we used self-reported smoking-status as a training label. Individuals' self-reported smoking status was used to identify differentially methylated CpG sites via the Kruskal-Wallis test by ranks. These sites were then used to train a multi-class logistic regression model, ENSS, which used Elastic Net regularisation. ENSS was evaluated in a hold-out test dataset as well as an independent test cohort. Additionally, the independent test cohort was used to compare ENSS with two existing gold standard models: DNAmPACKYRS and mCigarette. We evaluated ENSS' ability to separate classes of smoking-status (never, ex, and current) pairwise, with AUCs of 0.977, 0.941, 0.909 on a hold-out test dataset, and AUCs of 0.971, 0.859, 0.686 on an independent test cohort. While ENSS did not outperform prior research, we indentified several limitations of the model that could be addressed to improve performance and mitigate overfitting.
+    Smoking is the leading cause of preventable death. Current surveillance relies on self-reported smoking data, which is prone to inaccuracy and bias. As an alternative, DNA methylation can be used as a biomarker for lifetime smoking exposure, and is not limited by the same biases as self-reported data. Prior research has used self-report pack-years as a training label, which we deem to be an unreliable and biased measure. We propose Elastic Net smoking status (ENSS), a DNA methylation-based machine learning model which classifies lifetime smoking exposure. As an alternative to self-reported pack-years, we used self-reported smoking status (never-, ex- or current-smoker) as a training label. Individuals' self-reported smoking status was used to identify differentially methylated CpG sites via the Kruskal-Wallis test by ranks. These sites were then used to train a multi-class logistic regression model, ENSS, which used Elastic Net regularisation. ENSS was evaluated in a hold-out test dataset as well as an independent test cohort. Additionally, the independent test cohort was used to compare ENSS with two existing gold standard models: DNAmPACKYRS and mCigarette. We evaluated ENSS' ability to separate classes of smoking status pairwise, with AUCs of 0.977, 0.941, 0.909 on a hold-out test dataset, and AUCs of 0.971, 0.859, 0.686 on an independent test cohort. While ENSS did not outperform prior research, we identified several limitations of the model that could be addressed to improve performance and mitigate overfitting.
 \end{abstract}
 
 \newpage
@@ -112,7 +113,7 @@
 The harms associated with tobacco use are well recognised. Tobacco kills up to half its users who do not quit and more than 8 million people per year, including an estimated 1.3 million non-smokers due to second hand smoke \cite{who_tobacco}. Smoking is the leading cause of preventable death in both the United States \cite{hhs_smoking_2014} and New Zealand \cite{nip2024phcc_smoking2023}. Smoking causes cancer, heart disease, lung disease, stroke, type 2 diabetes, and harmful reproductive effects \cite{hhs_smoking_2014}. There is a growing body of evidence suggesting a causal relationship between smoking and mental health issues \cite{taylor2019smoking}. Such negative impacts on patient health due to tobacco use are undesirable, as well as are avoidable. For these reasons, tobacco usage is of great concern to health professionals. The World Health Organization asserts that surveillance is key for addressing the tobacco epidemic, as tracking tobacco usage indicates how to shape policy \cite{who_tobacco}.
 
 \subsection{Self-reported smoking status} \label{sec:srss}
-Current surveillance relies on self-reported smoking data, that is, a record of a patient's smoking history by personal recalling and reporting. This is a convenient and cost-effective way of collecting smoking statistics. There are two main types of smoking data used to measure tobacco exposure: smoking status and smoking pack-years. Smoking status is label based on the history and habits of tobacco use. Individuals are binned into never-smokers, ex-smokers and current-smokers. Alternatively, smoking pack-years is a calculated score that tries to quantify tobacco use. It is calculated as the number of packs of cigarettes smoked per day multiplied by years of smoking \cite{smokingpackyears}. For example, one pack-year is one pack per day for one year, or half a pack per day for two years. Therefore, smoking pack-years quantifies both the degree of exposure and duration of exposure equally.
+Current surveillance relies on self-reported smoking data, that is, a record of a patient's smoking history by personal recalling and reporting. This is a convenient and cost-effective way of collecting smoking statistics. There are two main types of smoking data used to measure tobacco exposure: smoking status and smoking pack-years. smoking status is label based on the history and habits of tobacco use. Individuals are binned into never-smokers, ex-smokers and current-smokers. Alternatively, smoking pack-years is a calculated score that tries to quantify tobacco use. It is calculated as the number of packs of cigarettes smoked per day multiplied by years of smoking \cite{smokingpackyears}. For example, one pack-year is one pack per day for one year, or half a pack per day for two years. Therefore, smoking pack-years quantifies both the degree of exposure and duration of exposure equally.
 
 Self-reported smoking data has several limitations. Relying on individuals recounting information can introduce bias. Self-reported smoking data is prone to inaccuracy due to stigma, recall bias and a lack of information on second-hand exposure \cite{park2015correlation, gorber2009accuracy}. Specifically, the social pressure to deny partaking in stigmatised behaviours, memory lapses and not being aware of sources of second-hand exposure can all influence the accuracy of self-reported smoking data. A method of using objective evidence to determine smoking history could overcome these issues. On the other hand, the inaccuracy of self-reported smoking data can differ between population groups. For example, studies suggest that teens are more likely to provide false responses in smoking surveys \cite{park2015correlation}. Moreover, tobacco consumption differs between social groups, with smoking more prevalent in low-education and low-socio-economic groups \cite{cdc2019_smoking}.
 
@@ -219,6 +220,119 @@ and:
 
 We can see this is simply mean-squared error, with the \(L_1\)-norm and \(L_2\)-norm included as penalisation terms on \(\beta\). The two hyperparameters \(\alpha\) and \(\lambda\) control the regularisation strength and ratio between \(L_1\)-norm and \(L_2\)-norms, respectively. Elastic Net is a combination of two other forms of regularised linear regression: lasso \cite{tibshirani1996regression} and ridge \cite{hoerl1970ridge} regression. The two mathematical regularisation terms have interpretable effects on the convergence of \(\beta\). Gradient updates for \(||\beta||_1\) are uniform for all non-zero values of \(\beta_i\), which typically results in most \(\beta_i\) set to zero, with some having large values. This is referred to as a sparse solution. Gradient updates for \(||\beta||_2^2\) are large for large \(\beta_i\), and small for small \(\beta_i\), which typically results in all \(\beta_i\) having similar values. This is referred to as shrinkage. Together, this results in Elastic Net models promoting the grouping effect, where strongly related features are all included or excluded together. This grouping effect is particularly useful when \(p > n\), as it provides better feature selection than lasso \cite{zou2005regularization}. Because of this, Elastic Net sees wide use in epigenetics, with biological age clocks being one area of particular use \cite{teschendorff2025epigenetic}.
 
+% \begin{figure}[h]
+%     \centering
+%     \begin{subfigure}{0.49\textwidth}
+%         \resizebox{\textwidth}{!}{
+%             \begin{tikzpicture}
+%                 \begin{axis}[
+%                         % axis lines = left,
+%                         axis x line=center,
+%                         axis y line=center,
+%                         xtick={-5,-3,...,5},
+%                         ytick={-5,-3,...,5},
+%                         xlabel = \(x\),
+%                         ylabel = \(f(x)\),
+%                         xlabel style={below right},
+%                         ylabel style={above left},
+%                         xmin=-6, xmax=6,
+%                         ymin=-6, xmax=6,
+%                         legend pos = south east,
+%                     ]
+%                     \addplot[domain=-5:0, color=red]{-x};
+%                     \addplot[domain=0:5, color=red]{x};
+%                     \addlegendentry{\(f\)}
+%                 \end{axis}
+%             \end{tikzpicture}
+%         }
+%         \caption{}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}{0.49\textwidth}
+%         \resizebox{\textwidth}{!}{
+%             \begin{tikzpicture}
+%                 \begin{axis}[
+%                         % axis lines = left,
+%                         axis x line=center,
+%                         axis y line=center,
+%                         xtick={-5,-3,...,5},
+%                         ytick={-5,-3,...,5},
+%                         xlabel = \(x\),
+%                         ylabel = \(f'(x)\),
+%                         xlabel style={below right},
+%                         ylabel style={above left},
+%                         xmin=-6, xmax=6,
+%                         ymin=-6, ymax=6,
+%                         legend pos = south east,
+%                     ]
+%                     \addplot[domain=-5:0, color=red]{-1};
+%                     \addplot[domain=0:5, color=red]{1};
+%                     \addlegendentry{\(f'\)}
+%                 \end{axis}
+%             \end{tikzpicture}
+%         }
+%         \caption{}
+%     \end{subfigure}
+%     \caption{}
+% \end{figure}
+
+
+% \begin{figure}[h]
+%     \centering
+%     \begin{subfigure}{0.49\textwidth}
+%         \resizebox{\textwidth}{!}{
+%             \begin{tikzpicture}
+%                 \begin{axis}[
+%                         % axis lines = left,
+%                         axis x line=center,
+%                         axis y line=center,
+%                         xtick={-5,-3,...,5},
+%                         ytick={-5,-3,...,5},
+%                         xlabel = \(x\),
+%                         ylabel = \(f(x)\),
+%                         xlabel style={below right},
+%                         ylabel style={above left},
+%                         xmin=-6, xmax=6,
+%                         ymin=-6, xmax=6,
+%                         legend pos = south east,
+%                     ]
+%                     \addplot[domain=-5:0, color=blue]{-x^2};
+%                     \addplot[domain=0:5, color=blue]{x^2};
+%                     \addlegendentry{\(f\)}
+%                 \end{axis}
+%             \end{tikzpicture}
+%         }
+%         \caption{}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}{0.49\textwidth}
+%         \resizebox{\textwidth}{!}{
+%             \begin{tikzpicture}
+%                 \begin{axis}[
+%                         % axis lines = left,
+%                         axis x line=center,
+%                         axis y line=center,
+%                         xtick={-5,-3,...,5},
+%                         ytick={-5,-3,...,5},
+%                         xlabel = \(x\),
+%                         ylabel = \(f'(x)\),
+%                         xlabel style={below right},
+%                         ylabel style={above left},
+%                         xmin=-6, xmax=6,
+%                         ymin=-6, ymax=6,
+%                         legend pos = south east,
+%                     ]
+%                     \addplot[domain=-5:0, color=blue]{-x};
+%                     \addplot[domain=0:5, color=blue]{x};
+%                     \addlegendentry{\(f'\)}
+%                 \end{axis}
+%             \end{tikzpicture}
+%         }
+%         \caption{}
+%     \end{subfigure}
+%     \caption{}
+% \end{figure}
+
 \subsubsection{DNAmPACKYRS} \label{sec:dnampackyrs}
 Lu et al. \cite{lu2019dna} proposed DNAmPACKYRS as a DNAm based score for calculating smoking pack-years. This score was originally developed as surrogate biomarker for use in the DNAm GrimAge \cite{lu2019dna} and DNAm GrimAge v2 epigenetic clocks \cite{lu2022dna}. DNAm GrimAge is a regression model for estimating mortality risk. The DNAm GrimAge score is calculated using the covariates sex, age, 7 surrogate biomarkers of plasma proteins, and of relevance, a surrogate biomarker for smoking pack-years: DNAmPACKYRS. Elastic Net regression was used to train both DNAm GrimAge and the surrogate biomarkers of plasma proteins and pack-years. Training data consisted of 1731 individuals from the Framingham Heart Study (FHS) dataset \cite{doi:10.2105/AJPH.41.3.279}. Individuals from this dataset had a mean age of 66 years. 54\% of individuals were female, leaving 45\% as male. The intersection of sites available on Illumina 450k and Illumina EPIC were chosen as the available CpG sites for training. This was to ensure compatibility and future-proofing with new datasets. A total of \num{450161} CpG sites were available. 10-fold cross-validation was used for hyperparameter tuning the regularisation strength of the Elastic Net model. This resulted in the DNAmPACKYRS score which used 172 CpG sites.
 
@@ -254,10 +368,10 @@ There are limitations associated with the mCigarette score. The choice of smokin
 % \end{itemize}
 
 \subsection{Aim of this work}
-% This work aims to use self-reported smoking-status for machine learning training to classify lifetime smoking exposure using DNA methylation data.
+% This work aims to use self-reported smoking status for machine learning training to classify lifetime smoking exposure using DNA methylation data.
 This work aims to use DNA methylation-based machine learning to classify lifetime smoking exposure, using self-reported smoking status as a training label.
 
-As discussed, there are limitations associated with using smoking pack-years as a training label, namely, not accounting for the length of smoking cessation. This could be addressed by adjusting smoking pack-year values for the length of smoking cessation. However, this would require the use of additional self-reported data, which could also introduce further bias. As an alternative to smoking pack-years, self-reported smoking status (current-, ex- or never-smoker) is a more consistent measure of lifetime smoking exposure. In contrast to prior research which uses smoking pack-years, we propose Elastic Net Smoking-Status (ENSS) as a method which uses smoking-status as a training label for supervised machine learning.  Since smoking-status is a discrete variable (rather than continuous like smoking pack-years), this required reframing the modelling of smoking history as a classification task rather than a regression task. While current methods for predicting smoking history perform well separating current-smokers from other smokers, performance separating never-smokers from ex-smokers is modest. Because of the described limitations of smoking pack-years, the change to smoking-status in our proposed method aims to achieve better class separation between never-smokers and ex-smokers.
+As previously discussed, there are limitations associated with using smoking pack-years as a training label, namely, not accounting for the length of smoking cessation. This could be addressed by adjusting smoking pack-year values for the length of smoking cessation. However, this would require the use of additional self-reported data, which could also introduce further bias. As an alternative to smoking pack-years, self-reported smoking status (current-, ex- or never-smoker) is a more consistent measure of lifetime smoking exposure. In contrast to prior research which uses smoking pack-years, we propose Elastic Net smoking status (ENSS) as a method which uses smoking status as a training label for supervised machine learning.  Since smoking status is a discrete variable (rather than continuous like smoking pack-years), this required reframing the modelling of smoking history as a classification task rather than a regression task. While existing (pack-years trained) methods for predicting smoking history perform well separating current-smokers from other smokers, their ability to separate never-smokers from ex-smokers is modest. Because of the described limitations of smoking pack-years, the change to smoking status in our proposed method aims to achieve better class separation between never-smokers and ex-smokers.
 
 % In order to overcome the limitations of prior
 
@@ -294,7 +408,7 @@ The output of this model \(\hat{y}\) is matrix of \(K\) probability predictions,
 This work used two datasets, a discovery cohort and an independent test cohort.
 
 \subsubsection{Cohort 1: Discovery}
-Cohort 1 contained DNAm data for 943 individuals. Across these individuals, 100\% were male, and there was a mean age of 72 years. Data was collected using the Illumina 450k array, which measured the methylation of \num{449521} CpG sites using the white blood cells found in whole blood samples. To ensure model compatibility with independent datasets, available CpG sites were restricted to those found on both the Illumina 450k and EPIC arrays. This reduced available CpG sites by \(\sim\!10\%\). Note that this practice was consistent with the methods seen in prior research (see \ref{sec:dnampackyrs} and \ref{sec:mcigarette}). Alongside epigenetic data, age, sex, self-reported pack-years and self-reported smoking-status were also recorded. Of the 943 individuals, 235 were never-smokers, 599 were ex-smokers and 109 were current-smokers. 90\% of this cohort was used as the model's training dataset, while the remaining 10\% was reserved as a hold-out test dataset to evaluate model performance. This split was done in a stratified manner, which preserved the class balance from the original cohort.
+Cohort 1 contained DNAm data for 943 individuals. Across these individuals, 100\% were male, and there was a mean age of 72 years. Data was collected using the Illumina 450k array, which measured the methylation of \num{449521} CpG sites using the white blood cells found in whole blood samples. To ensure model compatibility with independent datasets, available CpG sites were restricted to those found on both the Illumina 450k and EPIC arrays. This reduced available CpG sites by \(\sim\!10\%\). Note that this practice was consistent with the methods seen in prior research (see \ref{sec:dnampackyrs} and \ref{sec:mcigarette}). Alongside epigenetic data, age, sex, self-reported pack-years and self-reported smoking status were also recorded. Of the 943 individuals, 235 were never-smokers, 599 were ex-smokers and 109 were current-smokers. 90\% of this cohort was used as the model's training dataset, while the remaining 10\% was reserved as a hold-out test dataset to evaluate model performance. This split was done in a stratified manner, which preserved the class balance from the original cohort.
 
 % \begin{itemize}
 %     \item[\checkmark] Illumina 450k
@@ -311,7 +425,7 @@ Cohort 1 contained DNAm data for 943 individuals. Across these individuals, 100\
 % \end{itemize}
 
 \subsubsection{Cohort 2: Evaluation}
-Cohort 2 contained DNAm data for 984 individuals. Across these individuals 67\% were male, and there was a mean age of 68 years. Data was collected using the Illumina EPIC array, which measured \num{865,859} CpG sites using the white blood cells found in whole blood samples. Because the model was trained on a dataset using the 450k array, the available sites in this evaluation dataset were restricted to those found on both Illumina 450k and EPIC. This reduced available CpG sites by \(\sim\!50\%\). Alongside epigenetic data, age, sex, self-reported pack-years and self-reported smoking-status were also recorded. Of the 984 individuals, 403 were never-smokers, 476 were ex-smokers and 105 were current-smokers. In addition to independently testing ENSS' performance, this dataset was used to compare ENSS to the externally-derived, existing gold standard models.
+Cohort 2 contained DNAm data for 984 individuals. Across these individuals 67\% were male, and there was a mean age of 68 years. Data was collected using the Illumina EPIC array, which measured \num{865,859} CpG sites using the white blood cells found in whole blood samples. Because the model was trained on a dataset using the 450k array, the available sites in this evaluation dataset were restricted to those found on both Illumina 450k and EPIC. This reduced available CpG sites by \(\sim\!50\%\). Alongside epigenetic data, age, sex, self-reported pack-years and self-reported smoking status were also recorded. Of the 984 individuals, 403 were never-smokers, 476 were ex-smokers and 105 were current-smokers. In addition to independently testing ENSS' performance, this dataset was used to compare ENSS to the externally-derived, existing gold standard models.
 
 \subsubsection{Choice of discovery and evaluation cohorts}
 This approach of using two independent datasets to train and evaluate a model is not conventional in machine learning. Instead, all available data is split in training, validation and testing sets. However, independent testing data is common practice in clinical research. Not only does this evaluate overfitting, it also evaluates generalisability across populations and ascertainment bias, both relevant challenges when developing a clinical test. Because of the multidisciplinary nature of this project, a combination of both approaches was used. This then required deciding which cohort would provide training data, and which would be used for evaluation. Cohort 1 was selected for training as it contained only males. Given that sex is a likely confounder of lifetime smoking exposure (males tend to smoke more than females \cite{WHO2021Tobacco, higgins2015literature}), Cohort 1 was deemed to be a less-confounded dataset.
@@ -393,7 +507,7 @@ where \(C\) is the number of samples, \(n_i\) is the number of observations in t
 
 The \num{3122} sites identified by the Kruskal-Wallis test were then utilised in machine learning training. Using the 848 individuals from the cohort 1 training set, DNAm values from these sites were used to train a multi-class Elastic Net logistic regression model. The implementation of this model was provided by scikit-learn, via the \verb|linear_model.LogisticRegression| class. This model used the Elastic Net penalty and SAGA solver, as this is the only solver compatible with Elastic Net regularisation. However, this does make the model stochastic. Additionally, the model used balanced class weights. Because of the class imbalance in the training dataset (see Table \ref{table:dataset-compare-internal}) the model was performing poorly when classifying never-smokers and current-smokers. By using balanced class weights, gradient updates are scaled inversely-proportional to the frequency of the given class. While this fixed the misclassification issues, it also can increase the chance of overfitting if the class balance present in the training sample is not representative of the true population.
 
-Two of the hyperparameters required tuning: regularisation strength (\(\alpha\)) and \(L_1\) ratio (\(\lambda\)). Values for these were determined using a combination of k-fold cross-validation and grid search. In particular, the training dataset was split into 10 stratified folds for use in cross-validation. A choice of \(k=10\) was used to ensure each run in the cross-validation loop contained sufficient training data, because of the relatively low training dataset size. Folds were chosen to be stratified to because of the class imbalance. Cross-validation was used instead of a typical validation hold-out set in order to preserve the size of the training dataset. A grid search was used to evaluate the different combinations of hyperparameters. \(F_1\)-macro was selected as the scoring function to evaluate each fit, as each class is equally represented in the score, in spite of class imbalance. Outputs of cross-validation included the mean and standard deviation of \(F_1\)-macro scores across the 10 folds per fit. These were then used to calculate 95\% confidence intervals (see Figure \ref{fig:cross-validation}). Because the majority of hyperparameter choices had overlapping 95\% confidence intervals, they were deemed to not be statistically different. Therefore, hyperparameters were selected to increase regularisation strength and minimise the number of features used in the final model. This resulted in a choice of \(\alpha = 0.2\) and \(\lambda = 0.85\), which were used to retrain the Elastic Net model on the entire training dataset. Henceforth, we refer to this trained model as Elastic Net Smoking-Status (ENSS). Implementations of cross-validation and grid search were provided by scikit-learn, via the \verb|sklearn.model_selection.StratifiedKFold| and \verb|sklearn.model_selection.GridSearchCV| classes.
+Two of the hyperparameters required tuning: regularisation strength (\(\alpha\)) and \(L_1\) ratio (\(\lambda\)). Values for these were determined using a combination of k-fold cross-validation and grid search. In particular, the training dataset was split into 10 stratified folds for use in cross-validation. A choice of \(k=10\) was used to ensure each run in the cross-validation loop contained sufficient training data, because of the relatively low training dataset size. Folds were chosen to be stratified to because of the class imbalance. Cross-validation was used instead of a typical validation hold-out set in order to preserve the size of the training dataset. A grid search was used to evaluate the different combinations of hyperparameters. \(F_1\)-macro was selected as the scoring function to evaluate each fit, as each class is equally represented in the score, in spite of class imbalance. Outputs of cross-validation included the mean and standard deviation of \(F_1\)-macro scores across the 10 folds per fit. These were then used to calculate 95\% confidence intervals (see Figure \ref{fig:cross-validation}). Because the majority of hyperparameter choices had overlapping 95\% confidence intervals, they were deemed to not be statistically different. Therefore, hyperparameters were selected to increase regularisation strength and minimise the number of features used in the final model. This resulted in a choice of \(\alpha = 0.2\) and \(\lambda = 0.85\), which were used to retrain the Elastic Net model on the entire training dataset. Henceforth, we refer to this trained model as Elastic Net smoking status (ENSS). Implementations of cross-validation and grid search were provided by scikit-learn, via the \verb|sklearn.model_selection.StratifiedKFold| and \verb|sklearn.model_selection.GridSearchCV| classes.
 
 \begin{figure}[tb]
     \centering
@@ -691,7 +805,7 @@ Finally, distributions of probabilities per class, per class-specific predictor,
         \includegraphics[width=\linewidth]{cohort2/female_only/test_macro_ovo_roc.png}
         \caption{Female only}
     \end{subfigure}
-    \caption[Macro-averaged ROC curves (Cohort 2, separated by sex)]{Macro-averaged ROC curves (Cohort 2, separated by sex). The model's ability to separate classes of smoking-status is marginally better in males than females.}
+    \caption[Macro-averaged ROC curves (Cohort 2, separated by sex)]{Macro-averaged ROC curves (Cohort 2, separated by sex). The model's ability to separate classes of smoking status is marginally better in males than females.}
     \label{fig:sex-sep-macro-rocs}
 \end{figure}
 
@@ -804,7 +918,7 @@ An Elastic Net linear regression model was trained as a benchmark to evaluate th
     \end{tabularx}
 \end{table}
 
-To avoid discovery bias associated with the training cohort, model comparisons were only evaluated using Cohort 2. OvO ROC curves comparing Elastic Net Smoking-Status, DNAmPACKYRS and mCigarette can be seen in Figure \ref{fig:comparison-rocs}. All three models achieved excellent performance separating never-smokers from current-smokers. Namely, ENSS achieved an ROC-AUC of 0.971, DNAmPACKYRS achieved an ROC-AUC of 0.991 and mCigarette achieved an ROC-AUC of 0.994. Both DNAmPACKYRS and mCigarette achieved excellent performance separating ex-smokers from current-smokers, with ROC-AUCs of 0.915 and 0.923, respectively, while Elastic Net Smoking-Status achieved good performance, with an ROC-AUC of 0.859. For separating never-smokers from ex-smokers, mCigarette achieved good performance with an ROC-AUC of 0.838, DNAmPACKYRS achieved acceptable performance with an ROC-AUC of 0.798, while ENSS achieved poor performance with an ROC-AUC of 0.686. A summary of these AUCs can be seen in Table \ref{table:auc-comparison}.
+To avoid discovery bias associated with the training cohort, model comparisons were only evaluated using Cohort 2. OvO ROC curves comparing Elastic Net smoking status, DNAmPACKYRS and mCigarette can be seen in Figure \ref{fig:comparison-rocs}. All three models achieved excellent performance separating never-smokers from current-smokers. Namely, ENSS achieved an ROC-AUC of 0.971, DNAmPACKYRS achieved an ROC-AUC of 0.991 and mCigarette achieved an ROC-AUC of 0.994. Both DNAmPACKYRS and mCigarette achieved excellent performance separating ex-smokers from current-smokers, with ROC-AUCs of 0.915 and 0.923, respectively, while Elastic Net smoking status achieved good performance, with an ROC-AUC of 0.859. For separating never-smokers from ex-smokers, mCigarette achieved good performance with an ROC-AUC of 0.838, DNAmPACKYRS achieved acceptable performance with an ROC-AUC of 0.798, while ENSS achieved poor performance with an ROC-AUC of 0.686. A summary of these AUCs can be seen in Table \ref{table:auc-comparison}.
 
 Comparing ENSS to the models from prior research shows worse performance in the independent cohort, indicative of overfitting. In order to diagnose this, a linear model (using the same algorithm as DNAmPACKYRS and mCigarette, see Equation \ref{eqn:lin_elastic_net}) was trained to benchmark the utility of the training dataset. OvO ROC curves of this model can be seen in Figure \ref{fig:comparison-rocs}. The linear benchmark achieved ROC-AUCs of: 0.990 for separating never-smokers from current-smokers, 0.918 for separating ex-smokers from current-smokers, and 0.773 for separating never-smokers from ex-smokers. This performance was similar to that of DNAmPACKYRS and mCigarette, and outperformed ENSS (see Table \ref{table:auc-comparison}). Comparing linear to logistic models, both internally and externally derived linear models outperformed the internally derived logistic model. Moreover, the linear benchmark was not tuned or optimised, and used the same hyperparameters as the logistic model. This result suggests that the poor regularisation of ENSS was due to the model itself, rather than the quality of the training dataset.
 
@@ -849,6 +963,8 @@ As discussed, the trained logistic regression model (ENSS) overfits the training
 Recent work has shown promise integrating principal component analysis (PCA) into Elastic Net model training \cite{higgins2022computational}. Using only a single additional step, PC-based Elastic Net showed improvements in reliability and performance, due to reducing the effect of noise present in the dataset. Moreover, using Elastic Net models trained on principal components (rather than CpG sites) has benefits for interpretability and regularisation. While this method has shown improvements for DNAm-based aging clocks, little work has been done to evaluate the benefits for DNAm-based smoking scores. Moreover, improvements associated with regularisation and noise could help reduce the overfitting problem present with the method proposed in this work.
 
 This worked aimed to improve class separation by reframing the problem of modelling lifetime smoking exposure as a classification task rather than a regression task. To achieve this, we adapted the existing gold-standard techniques, which use linear regression, into logistic regression algorithms. However, there are other choices of classification algorithms to explore. Decision trees are one such example that show promise. Decision trees are relatively simple models, and therefore could perform well with smaller training datasets, addressing a limitation of ENSS. Moreover, decision tree training requires iteratively selecting features in training, which could leverage the existing Kruskal-Wallis feature selection used in this method. Additionally, ensemble methods such as random forests or gradient boosting (e.g. XGBoost) provide options for increased accuracy, however, at the cost of interpretability.
+
+Alternatively, 
 
 \section{Footnotes}
 \subsection{Acknowledgements}
