@@ -218,120 +218,124 @@ where
 and:
 \[||\beta||_2 = \sqrt{\sum_{i=1}^{p} \beta_i^2}\]
 
-We can see this is simply mean-squared error, with the \(L_1\)-norm and \(L_2\)-norm included as penalisation terms on \(\beta\). The two hyperparameters \(\alpha\) and \(\lambda\) control the regularisation strength and ratio between \(L_1\)-norm and \(L_2\)-norms, respectively. Elastic Net is a combination of two other forms of regularised linear regression: lasso \cite{tibshirani1996regression} and ridge \cite{hoerl1970ridge} regression. The two mathematical regularisation terms have interpretable effects on the convergence of \(\beta\). Gradient updates for \(||\beta||_1\) are uniform for all non-zero values of \(\beta_i\), which typically results in most \(\beta_i\) set to zero, with some having large values. This is referred to as a sparse solution. Gradient updates for \(||\beta||_2^2\) are large for large \(\beta_i\), and small for small \(\beta_i\), which typically results in all \(\beta_i\) having similar values. This is referred to as shrinkage. Together, this results in Elastic Net models promoting the grouping effect, where strongly related features are all included or excluded together. This grouping effect is particularly useful when \(p > n\), as it provides better feature selection than lasso \cite{zou2005regularization}. Because of this, Elastic Net sees wide use in epigenetics, with biological age clocks being one area of particular use \cite{teschendorff2025epigenetic}.
+\begin{figure}[!b]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}
+                \begin{axis}[
+                        % axis lines = left,
+                        axis x line=center,
+                        axis y line=center,
+                        xtick={-5,-3,...,5},
+                        ytick={-5,-3,...,5},
+                        xticklabel=\empty,
+                        yticklabel=\empty,
+                        xlabel = \(\beta_i\),
+                        ylabel = \(||\beta_i||_1\),
+                        xlabel style={right},
+                        ylabel style={above},
+                        xmin=-6, xmax=6,
+                        ymin=-6, ymax=6,
+                        legend pos = south east,
+                    ]
+                    \addplot[domain=-5:0, color=red]{-x};
+                    \addplot[domain=0:5, color=red]{x};
+                    \addlegendentry{\(||\beta_i||_1\)}
+                \end{axis}
+            \end{tikzpicture}
+        }
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}
+                \begin{axis}[
+                        % axis lines = left,
+                        axis x line=center,
+                        axis y line=center,
+                        xtick={-5,-3,...,5},
+                        ytick={-5,-3,...,5},
+                        xticklabel=\empty,
+                        yticklabel=\empty,
+                        xlabel = \(\beta_i\),
+                        ylabel = \(\frac{d}{d\beta_i}||\beta_i||_1\),
+                        xlabel style={right},
+                        ylabel style={above},
+                        xmin=-6, xmax=6,
+                        ymin=-6, ymax=6,
+                        legend pos = south east,
+                    ]
+                    \addplot[domain=-5:0, color=red]{-1};
+                    \addplot[domain=0:5, color=red]{1};
+                    \addlegendentry{\(\frac{d}{d\beta_i}||\beta_i||_1\)}
+                \end{axis}
+            \end{tikzpicture}
+        }
+    \end{subfigure}
+    \caption[\(L_1\)-norm and subgradients]{\(L_1\)-norm values and associated subgradient values for a single parameter \(\beta_i\). Subgradients are uniform for all non-zero values of \(\beta_i\), so \(\beta_i\) is increased/decreased until it hits zero. This tends to zero out most \(\beta_i\), promoting sparsity.}
+    \label{fig:l1-gradients}
+\end{figure}
 
-% \begin{figure}[h]
-%     \centering
-%     \begin{subfigure}{0.49\textwidth}
-%         \resizebox{\textwidth}{!}{
-%             \begin{tikzpicture}
-%                 \begin{axis}[
-%                         % axis lines = left,
-%                         axis x line=center,
-%                         axis y line=center,
-%                         xtick={-5,-3,...,5},
-%                         ytick={-5,-3,...,5},
-%                         xlabel = \(x\),
-%                         ylabel = \(f(x)\),
-%                         xlabel style={below right},
-%                         ylabel style={above left},
-%                         xmin=-6, xmax=6,
-%                         ymin=-6, xmax=6,
-%                         legend pos = south east,
-%                     ]
-%                     \addplot[domain=-5:0, color=red]{-x};
-%                     \addplot[domain=0:5, color=red]{x};
-%                     \addlegendentry{\(f\)}
-%                 \end{axis}
-%             \end{tikzpicture}
-%         }
-%         \caption{}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}{0.49\textwidth}
-%         \resizebox{\textwidth}{!}{
-%             \begin{tikzpicture}
-%                 \begin{axis}[
-%                         % axis lines = left,
-%                         axis x line=center,
-%                         axis y line=center,
-%                         xtick={-5,-3,...,5},
-%                         ytick={-5,-3,...,5},
-%                         xlabel = \(x\),
-%                         ylabel = \(f'(x)\),
-%                         xlabel style={below right},
-%                         ylabel style={above left},
-%                         xmin=-6, xmax=6,
-%                         ymin=-6, ymax=6,
-%                         legend pos = south east,
-%                     ]
-%                     \addplot[domain=-5:0, color=red]{-1};
-%                     \addplot[domain=0:5, color=red]{1};
-%                     \addlegendentry{\(f'\)}
-%                 \end{axis}
-%             \end{tikzpicture}
-%         }
-%         \caption{}
-%     \end{subfigure}
-%     \caption{}
-% \end{figure}
+\begin{figure}[t]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}
+                \begin{axis}[
+                        % axis lines = left,
+                        axis x line=center,
+                        axis y line=center,
+                        xtick={-5,-3,...,5},
+                        ytick={-5,-3,...,5},
+                        xticklabel=\empty,
+                        yticklabel=\empty,
+                        xlabel = \(\beta_i\),
+                        ylabel = \(||\beta_i||_2^2\),
+                        xlabel style={right},
+                        ylabel style={above},
+                        xmin=-6, xmax=6,
+                        ymin=-6, ymax=6,
+                        legend pos = south east,
+                    ]
+                    \addplot[domain=-5:5, color=blue]{x^2};
+                    \addlegendentry{\(||\beta_i||_2^2\)}
+                \end{axis}
+            \end{tikzpicture}
+        }
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}
+                \begin{axis}[
+                        % axis lines = left,
+                        axis x line=center,
+                        axis y line=center,
+                        xtick={-5,-3,...,5},
+                        ytick={-5,-3,...,5},
+                        xticklabel=\empty,
+                        yticklabel=\empty,
+                        xlabel = \(\beta_i\),
+                        ylabel = \(\frac{d}{d\beta_i}||\beta_i||_2^2\),
+                        xlabel style={right},
+                        ylabel style={above},
+                        xmin=-6, xmax=6,
+                        ymin=-6, ymax=6,
+                        legend pos = south east,
+                    ]
+                    \addplot[domain=-5:0, color=blue]{-x};
+                    \addplot[domain=0:5, color=blue]{x};
+                    \addlegendentry{\(\frac{d}{d\beta_i}||\beta_i||_2^2\)}
+                \end{axis}
+            \end{tikzpicture}
+        }
+    \end{subfigure}
+    \caption[\(L_2\)-norm and gradients]{\(L_2\)-norm (squared) values and associated gradient values for a single parameter \(\beta_i\). Gradients get smaller as \(\beta_i\) gets smaller, in which case a larger parameter will be increased/decreased before \(\beta_i\). This tends to set most \(\beta_i\) to a similar value, called shrinkage.}
+    \label{fig:l2-gradients}
+\end{figure}
 
-
-% \begin{figure}[h]
-%     \centering
-%     \begin{subfigure}{0.49\textwidth}
-%         \resizebox{\textwidth}{!}{
-%             \begin{tikzpicture}
-%                 \begin{axis}[
-%                         % axis lines = left,
-%                         axis x line=center,
-%                         axis y line=center,
-%                         xtick={-5,-3,...,5},
-%                         ytick={-5,-3,...,5},
-%                         xlabel = \(x\),
-%                         ylabel = \(f(x)\),
-%                         xlabel style={below right},
-%                         ylabel style={above left},
-%                         xmin=-6, xmax=6,
-%                         ymin=-6, xmax=6,
-%                         legend pos = south east,
-%                     ]
-%                     \addplot[domain=-5:0, color=blue]{-x^2};
-%                     \addplot[domain=0:5, color=blue]{x^2};
-%                     \addlegendentry{\(f\)}
-%                 \end{axis}
-%             \end{tikzpicture}
-%         }
-%         \caption{}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}{0.49\textwidth}
-%         \resizebox{\textwidth}{!}{
-%             \begin{tikzpicture}
-%                 \begin{axis}[
-%                         % axis lines = left,
-%                         axis x line=center,
-%                         axis y line=center,
-%                         xtick={-5,-3,...,5},
-%                         ytick={-5,-3,...,5},
-%                         xlabel = \(x\),
-%                         ylabel = \(f'(x)\),
-%                         xlabel style={below right},
-%                         ylabel style={above left},
-%                         xmin=-6, xmax=6,
-%                         ymin=-6, ymax=6,
-%                         legend pos = south east,
-%                     ]
-%                     \addplot[domain=-5:0, color=blue]{-x};
-%                     \addplot[domain=0:5, color=blue]{x};
-%                     \addlegendentry{\(f'\)}
-%                 \end{axis}
-%             \end{tikzpicture}
-%         }
-%         \caption{}
-%     \end{subfigure}
-%     \caption{}
-% \end{figure}
+We can see this is simply mean-squared error, with the \(L_1\)-norm and \(L_2\)-norm included as penalisation terms on \(\beta\). The two hyperparameters \(\alpha\) and \(\lambda\) control the regularisation strength and ratio between \(L_1\)-norm and \(L_2\)-norms, respectively. Elastic Net is a combination of two other forms of regularised linear regression: lasso \cite{tibshirani1996regression} and ridge \cite{hoerl1970ridge} regression. The two mathematical regularisation terms have interpretable effects on the convergence of \(\beta\). Gradient updates for \(||\beta||_1\) are uniform for all non-zero values of \(\beta_i\), which leads to \(\beta_i\) being increased or decreased until it hits zero (see Figure \ref{fig:l1-gradients}). This typically results in most \(\beta_i\) being set to zero, with a smaller number having large values. This is referred to as a sparse solution. Gradient updates for \(||\beta||_2^2\) are large for large \(\beta_i\), and small for small \(\beta_i\) (see Figure \ref{fig:l2-gradients}). When \(\beta_i\) gets small, gradient updates will increase or decrease a different, larger parameter before increasing or decreasing \(\beta_i\). This typically results in all \(\beta_i\) having similar values. This is referred to as shrinkage. Together, this results in Elastic Net models promoting the grouping effect, where strongly related features are all included or excluded together. This grouping effect is particularly useful when \(p > n\), as it provides better feature selection than lasso \cite{zou2005regularization}. Because of this, Elastic Net sees wide use in epigenetics, with biological age clocks being one area of particular use \cite{teschendorff2025epigenetic}.
 
 \subsubsection{DNAmPACKYRS} \label{sec:dnampackyrs}
 Lu et al. \cite{lu2019dna} proposed DNAmPACKYRS as a DNAm based score for calculating smoking pack-years. This score was originally developed as surrogate biomarker for use in the DNAm GrimAge \cite{lu2019dna} and DNAm GrimAge v2 epigenetic clocks \cite{lu2022dna}. DNAm GrimAge is a regression model for estimating mortality risk. The DNAm GrimAge score is calculated using the covariates sex, age, 7 surrogate biomarkers of plasma proteins, and of relevance, a surrogate biomarker for smoking pack-years: DNAmPACKYRS. Elastic Net regression was used to train both DNAm GrimAge and the surrogate biomarkers of plasma proteins and pack-years. Training data consisted of 1731 individuals from the Framingham Heart Study (FHS) dataset \cite{doi:10.2105/AJPH.41.3.279}. Individuals from this dataset had a mean age of 66 years. 54\% of individuals were female, leaving 45\% as male. The intersection of sites available on Illumina 450k and Illumina EPIC were chosen as the available CpG sites for training. This was to ensure compatibility and future-proofing with new datasets. A total of \num{450161} CpG sites were available. 10-fold cross-validation was used for hyperparameter tuning the regularisation strength of the Elastic Net model. This resulted in the DNAmPACKYRS score which used 172 CpG sites.
